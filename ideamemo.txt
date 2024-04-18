@@ -1,0 +1,64 @@
+敵のAI
+
+一定距離を取りながら、ターレットはこちらを狙う
+
+装填速度　移動速度
+
+壊した床は移動速度低下
+
+敵も強化される(やめ）
+
+全滅で次のステージ
+
+火力強化（壁の破壊力
+
+自機と敵は一撃死
+
+追加装甲
+
+ENEMY_B
+PLATER＿B
+
+オプションも一撃し
+
+RANK1
+
+ERATAN_K
+
+UPGRADEMENU
+
+SPEEDUP
+　BULLETSPEED
+　SHOTINTERVAL
+　MOVE
+　TURLET
+ADD ARMOR
+　FRONT
+　SIDE
+
+増加装甲
+OPTION
+FIREPOWER
+
+ETC
+LAND LEVELING
+PAVING
+
+弾速
+装填速度(自発間隔)Delay
+移動速度
+砲塔回転速度
+
+追加装甲(全面)
+追加装甲(側面)
+
+随伴機
+
+火力
+
+整地舗装　
+
+強化リセット
+
+
+
