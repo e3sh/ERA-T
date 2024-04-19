@@ -79,6 +79,7 @@ function SceneResult(){
 	}
 	this.draw = function(g){
 
+		g.font["std"].putchr("STAGE CLEAR", X-100, Y-220, 3);
 		g.font["std"].putchr("STAGE CLEAR", X, Y);
 
 		//g.screen[0].fill(BAR_X + slot*36,BAR_Y,36,8,"blue");
