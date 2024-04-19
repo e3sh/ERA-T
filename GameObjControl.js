@@ -78,16 +78,17 @@ function GameObject(){
 
         reexf = false;
 
-        /*
         Friend.sp.dispose(); Friend.re = true; 
-        FriendT.sp.dispose(); FriendT = true;
-        ArmorF.sp.dispose(); ArmorF = true;
-        ArmorL.sp.dispose(); ArmorL = true;
-        ArmorR.sp.dispose(); ArmorR = true;
-        */
+        FriendT.sp.dispose(); FriendT.re = true;
+        ArmorF.sp.dispose(); ArmorF.re = true;
+        ArmorL.sp.dispose(); ArmorL.re = true;
+        ArmorR.sp.dispose(); ArmorR.re = true;
+        
     }
   
-    this.step = function(g, input){
+    this.step = function(g, input, result){
+        //result = {score:0, time:g.time(), stage:1, clrf:false, govf:false};
+        this.spriteItem.collisionEnable = (result.clrf)?false:true;
 
         let x = input.x;
         let y = input.y;
@@ -132,6 +133,13 @@ function GameObject(){
 
         let vx = speed*x;
         let vy = speed*y;
+
+        if (result.clrf && (vx==0 && vy==0)){
+            let t = g.time() - result.time
+
+            vx = Math.trunc((320 - this.x)/40);//*(1500-t);
+            vy = Math.trunc((320 - this.y)/40);//*(1500-t);
+        }
 
         let wallf = false;
         let wpl = Boolean(this.spriteItem.wall)?((this.spriteItem.wall)?true:false):false;
@@ -250,7 +258,6 @@ function GameObject(){
             op.ptr++;
             op.ptr = op.ptr % op.x.length; 
         }
-
     }
     
     this.draw = function(g){
@@ -398,127 +405,9 @@ function GameObject(){
             sp.move(r, 2, 30);// number, r, speed, lifetime//
         }
     }
-
-//------------
-//
-/*
-    function GameObjPlayer_Step(g, input){
-
-        let x = input.x;
-        let y = input.y;
-        let trigger = input.trigger;
-        let lock = (input.left || input.right)?true:false;
-
-        if (trigger) {
-            if (this.triggerDelay < g.time()){
-                this.triggerDelay = g.time()+250;
-
-                //let n = g.sprite.get();//空値の場合は未使用スプライトの番号を返す。
-                let sp = g.sprite.itemCreate("BULLET_P", true, 8, 8);
-
-                let r =  this.turlet.vector();
-                let px = this.x + Math.cos((Math.PI/180)*r)*32
-                let py = this.y + Math.sin((Math.PI/180)*r)*32 
-
-                sp.pos(px, py, 0, 0.6 );
-                sp.move((r+90)% 360, 6, 3000);// number, r, speed, lifetime//3kf 5min
-                //spriteTable.push(g.sprite.get(n));
-
-                if (Friend.living){
-                    op = this.op;
-                    sp = g.sprite.itemCreate("BULLET_P", true, 8, 8);
-                    sp.pos(op.x[(op.ptr) % op.x.length], op.y[(op.ptr) % op.x.length], 0, 0.6 );
-                    sp.move((op.r[(op.ptr) % op.x.length]+90)% 360, 6, 3000);// number, r, speed, lifetime//3kf 5min
-                }
-            }
-        }
-
-        let speed = 3 + status.speed;// - (this.spriteItem.slow)?1:0;
-
-        if (Boolean(this.spriteItem.slow)){ 
-            if (this.spriteItem.slow){
-                //console.log("slowtrue");
-                speed = speed/2;
-                this.spriteItem.slow = false;
-            }else{
-                this.spriteItem.slow = false;
-            }
-        }
-
-        let vx = speed*x;
-        let vy = speed*y;
-
-        let wallf = false;
-        let wpl = Boolean(this.spriteItem.wall)?((this.spriteItem.wall)?true:false):false;
-        
-        let waf = false;
-        let wal = false;
-        let war = false;
-
-        
-        if (ArmorF.living){
-            waf = Boolean(ArmorF.wall)?((ArmorF.wall)?true:false):false;
-            ArmorF.wall = false;
-        }
-        if (ArmorL.living){
-            wal = Boolean(ArmorF.wall)?((ArmorL.wall)?true:false):false;
-            ArmorL.wall = false;
-        }
-        if (ArmorR.living){
-            war = Boolean(ArmorF.wall)?((ArmorR.wall)?true:false):false;
-            ArmorR.wall = false;        
-        }
-        
-        wallf = (wpl || waf || wal || war)?true:false;
-
-        if (wallf){ 
-            this.x = this.old_x;
-            this.y = this.old_y;
-            this.spriteItem.wall = false;
-        }
-
-        /*
-        this.old_x = this.x;
-        this.old_y = this.y;
-
-        this.x = this.x + vx;
-        this.y = this.y + vy;
-
-        if (this.x < 32)	this.x = 32;
-        if (this.x > RESO_X-32)	this.x = RESO_X-32;
-        if (this.y < 32)	this.y = 32;
-        if (this.y > RESO_Y-32)	this.y = RESO_Y-32;
-        */
-       /*
-        if (!lock) this.turlet.check(this.r);
-        if (vx!=0 || vy!=0) {
-
-            this.old_x = this.x;
-            this.old_y = this.y;
-
-            this.x = this.x + vx;
-            this.y = this.y + vy;
-
-            if (this.x < 32)	this.x = 32;
-            if (this.x > RESO_X-32)	this.x = RESO_X-32;
-            if (this.y < 32)	this.y = 32;
-            if (this.y > RESO_Y-32)	this.y = RESO_Y-32;
-
-            this.r = this.turlet.vecToR(vx,vy);
-            op = this.op;
-            op.x[op.ptr] = this.x;
-            op.y[op.ptr] = this.y;
-            op.r[op.ptr] = this.turlet.vector();
-            op.ptr++;
-            op.ptr = op.ptr % op.x.length; 
-        }
-    }
-
-*/
-
-
-
 }
+
+
 function GameObj_Friend(){
 
 
@@ -596,7 +485,7 @@ function GameObj_FlyCanon(){
        return rc;
     }
 
-    this.step = function(g, input) {
+    this.step = function(g, input, result) {
 
         if (this.spriteItem.living){
 
@@ -737,6 +626,7 @@ function GameObj_GradeUpItem(){
     let status = {speed:0, charge:0, power:0 };
 
     this.mode = 0;
+    this.blink = true;
 
     this.spriteItem;
     let reexf;
@@ -784,18 +674,31 @@ function GameObj_GradeUpItem(){
        return rc;
     }
 
-    this.step = function(g, input) {
+    this.step = function(g, input, result) {
         //console.log("pw-run" + this.triggerDelay );
+        if (result.clrf && (result.time + 750 > g.time())){
+            let r = Search(g, this.x, this.y);
+            this.spriteItem.move((r+260)%360,4,1);
+        }
 
         if (this.spriteItem.living){
 			if (this.triggerDelay < g.time()){
-				this.triggerDelay = g.time()+100;
+				this.triggerDelay = g.time()+250;
 
                 this.mode = (this.spriteItem.mode != this.mode)?this.spriteItem.mode:this.mode;
+                this.spriteItem.priority = this.mode;
                 //this.mode++;
                 //if (this.mode>3)  this.mode = 0;
                 //modechange
+
+                this.blink = (this.blink)?false:true;
             }
+            /*
+            if (result.clrf && (result.time + 750 > g.time())){
+                let r = Search(g, this.x, this.y);
+                this.spriteItem.move((r+260)%360,4,1);
+            }
+            */
             //自機が生きている状態
             reexf = false;//爆発済みf
         }else{
@@ -821,11 +724,19 @@ function GameObj_GradeUpItem(){
 
     this.draw = function(g){
 
-        const st  = [" - ","前面","側面","子機"];
-        const col = ["black","peru","blue","teal"];
-
+        const st  = [
+            [" --","正面","側面","子機"]
+            ,["None","FWD","SIDE"," OPT"]
+        ];
+        const col = [
+            ["black","peru","navy","teal"]
+            ,["rgb(64,64,64)","orange","blue","green"]
+        
+        ];
 
         //console.log("pw-draw" + this.triggerDelay );
+
+        let n = (this.blink)?0:1;
 
         if (this.spriteItem.living){
             this.spriteItem.view();
@@ -835,8 +746,8 @@ function GameObj_GradeUpItem(){
             const w = p.collision.w;
             const h = p.collision.h;
             g.screen[0].fill(x, y, w, h, "white");
-            g.screen[0].fill(x+1, y+1, w-2, h-2, col[ this.mode ]);
-            g.kanji.print(st[this.mode], x+2, y+4);
+            g.screen[0].fill(x+1, y+1, w-2, h-2, col[n][ this.mode ]);
+            g.kanji.print(st[n][this.mode], x+2, y+4);
             //console.log(this.mode + "," );
             //console.log("x," + p.x + "," + p.collision.w/2   );
             //console.log("y," + p.y + "," +  p.collision.h/2 );

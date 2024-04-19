@@ -139,11 +139,19 @@ function StageControl(game){
 
 	this.step = function(g, input, result){
 
+		
+
 		let spriteTable = g.sprite.itemList();
 
 		//---------------------breakcheck(block sprite hit check
 		for (let i in spriteTable){
 			let p = spriteTable[i];
+
+			let sp = spriteTable[i];
+			if (!sp.living) continue;
+			if (!sp.collisionEnable) continue;
+			if (!sp.visible) continue;
+
 			let w = p.collision.w;
 			let h = p.collision.h;
 			for (let cx = Math.trunc((p.x-(w/2))/8); cx <= Math.trunc((p.x+(w/2))/8); cx++){
@@ -152,46 +160,7 @@ function StageControl(game){
 					mapCheck(p, cx,cy);
 				}
 			}
-			/*
-			let cx = Math.trunc(p.x/8);
-			let cy = Math.trunc(p.y/8);
-
-			if (cy < block.length){
-				if (cx < block[cy].length){
-					if (block[cy][cx].on){
-						if (p.id == "BULLET_P"){
-							block[cy][cx].hp--;
-							if (block[cy][cx].hp < 0){
-								block[cy][cx].on = false;
-								block[cy][cx].break = true;
-								block[cy][cx].hit = true;
-							}
-							p.dispose();
-							result.score ++;
-						}
-						
-						if (p.id == "block"){
-							if (cy>=1){
-								block[cy-1][cx].on = true;
-								block[cy-1][cx].break = false;
-								//this._bhtm[cy-1][cx] = false;
-								p.dispose();
-							}
-						}
-						if (p.id == "Player"){
-							p.wall = true;
-						}
-					}
-					if (block[cy][cx].hit){
-						if (p.id == "Player"){
-							p.slow = true;
-						}
-					}
-				}
-			}
-			*/
 		}
-
 		//---
 		function mapCheck(p, cx, cy){
 			if (cy>=0 && cy < block.length){

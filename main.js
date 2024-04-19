@@ -88,7 +88,7 @@ function SpriteFontData() {
 //Image Asset Setup
 function pictdata(g){
 	g.asset.imageLoad( "SPGraph","pict/cha.png"	);
-	g.asset.imageLoad( "title"  ,"pict/TitleLogo.png" );
+	//g.asset.imageLoad( "title"  ,"pict/TitleLogo.png" );
 
 	g.asset.imageLoad( "JISLV1" ,"pict/k12x8_jisx0208c.png");
 	g.asset.imageLoad( "ASCII"  ,"pict/k12x8_jisx0201c.png");
