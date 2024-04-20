@@ -80,13 +80,31 @@ function StageControl(game){
 			enemy.init(g,1000/d+rn,5*t);
 			GObj.push(enemy);
 		}
-		if (rank >= 7){
+		if (rank >= 5){
 			rn = Math.trunc(Math.random()*300);
 			enemy = new GameObj_FlyCanon();
 			enemy.spriteItem = g.sprite.itemCreate("Enemy", true, 28, 28);
 			enemy.spriteItem.pos(320-t*160,30);
+			enemy.init(g,1000/d+rn,(10/d)*-t);
+			GObj.push(enemy);
+		}
+		if (rank >= 7){
+			rn = Math.trunc(Math.random()*300);
+			enemy = new GameObj_FlyCanon();
+			enemy.spriteItem = g.sprite.itemCreate("Enemy", true, 28, 28);
+			enemy.spriteItem.pos(320-t*280,30);
+			enemy.spriteItem.move(180, 2, 1000);
+			enemy.init(g,1000/d+rn,(10/d)*-t);
+			GObj.push(enemy);
+
+			rn = Math.trunc(Math.random()*300);
+			enemy = new GameObj_FlyCanon();
+			enemy.spriteItem = g.sprite.itemCreate("Enemy", true, 28, 28);
+			enemy.spriteItem.pos(320+t*280,30);
+			enemy.spriteItem.move(180, 2, 1000);
 			enemy.init(g,1000/d+rn,(10/d)*t);
 			GObj.push(enemy);
+
 		}
 	}
 
@@ -174,6 +192,17 @@ function StageControl(game){
 								block[cy][cx].hit = false;//true;
 							}
 							p.dispose();
+							//result.score ++;
+						}
+
+						if (p.id == "BULLET_P2"){
+							block[cy][cx].hp--;
+							if (block[cy][cx].hp < 0){
+								block[cy][cx].on = false;
+								block[cy][cx].break = true;
+								block[cy][cx].hit = false;//true;
+							}
+							//p.dispose();
 							//result.score ++;
 						}
 

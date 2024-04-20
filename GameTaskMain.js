@@ -54,6 +54,13 @@ class GameTask_Main extends GameTask {
 	        }
         );
 
+		g.sprite.setPattern("BULLET_P2", { image: "SPGraph",
+	        wait: 0, pattern: [
+                { x:16, y: 16, w: 8, h: 32, r: 0, fv: false, fh: false }
+	            ]
+	        }
+        );
+
 	    g.sprite.setPattern("Enemy", {
 	        image: "SPGraph",
 	        wait: 10,
@@ -134,6 +141,8 @@ class GameTask_Main extends GameTask {
 		let dkey = false; if (Boolean(w[68])) {if (w[68]) dkey = true;}
 		let wkey = false; if (Boolean(w[87])) {if (w[87]) wkey = true;}
 		let skey = false; if (Boolean(w[83])) {if (w[83]) skey = true;}
+		let qkey = false; if (Boolean(w[81])) {if (w[81]) qkey = true;}
+		let ekey = false; if (Boolean(w[69])) {if (w[69]) ekey = true;}
 
 		let upkey	 = false; if (Boolean(w[38])) {if (w[38]) upkey	  = true;}
 		let downkey  = false; if (Boolean(w[40])) {if (w[40]) downkey = true;}
@@ -205,8 +214,8 @@ class GameTask_Main extends GameTask {
 			this._y = (upkey)?-1:(downkey)?1:0;//this._y + vy;
 		}
 
-		let leftbutton = (lb || zkey);// || whl);
-		let rightbutton = (rb || zkey);// || whr);
+		let leftbutton = (lb || zkey || qkey);// || whl);
+		let rightbutton = (rb || zkey|| ekey);// || whr);
 		let trigger = (abtn || xbtn || spacekey);// || (mstate.button == 0));
 
 		let input = {x: this._x, y:this._y, trigger: trigger, left: leftbutton, right: rightbutton, keycode: w};

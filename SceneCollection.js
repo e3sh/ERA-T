@@ -57,9 +57,9 @@ function SceneResult(){
 	//	,"装填速度+(連射速度)(RAPID)"
 	//	,"旋回速度+(砲塔回転速度)"
 	//	,"移動速度+(MOVE SPEED)"
-		,"正面追加装甲(FRONT ARMOR)"
-		,"側面追加装甲(SIDE ARMOR)"
-		,"随伴機(OPTION)"
+	//	,"正面追加装甲(FRONT ARMOR)"
+	//	,"側面追加装甲(SIDE ARMOR)"
+	//	,"随伴機(OPTION)"
 	//	,"舗装(FIELDDAMAGE RESET)"
 	]
 
@@ -116,9 +116,9 @@ function SceneTitle(){
 		,""
 		,""
 		,"[操作]移動    : WASD or 矢印キー or GamePad 左アナログスティック"
-		,"      攻撃    : スペースキー or GamePad Button X/A"
-		,"攻撃方向の固定: Zキー or GamePad Button L/R"
-		,""
+		,"      攻撃    : SPACE key or GamePad Button X/A"
+		,"攻撃方向の固定: Z key  or GamePad Button L/R"
+		,"停止時砲塔旋回: Q,Ekey or GamePad Button L/R"
 		,""
 		,""
 		,"敵を倒すと出てくるアップグレードパーツ(弾を当てて切り替え)"
@@ -126,6 +126,7 @@ function SceneTitle(){
 		,"[正面/FWD ] 正面追加装甲"
 		,"[側面/SIDE] 側面追加装甲"
 		,"[子機/ OPT] 有線ドローン(OPTION)"
+		,"[弾種/CHNG] 弾の種類切り替え(通常<->ブロック貫通)"
 		,"  注：重複効果はありません。"
 	];
 

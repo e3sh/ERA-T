@@ -26,6 +26,7 @@ function GameObject(){
 
     this.spriteItem;
     let reexf;
+    let blmode = false;
 
     function turlet_vec_check(){
 		let turlet = 0;
@@ -47,6 +48,11 @@ function GameObject(){
 			if (wr >= 270) turlet+=3;
 			if (wr <=  90) turlet-=3;
 		}
+
+        this.move = function(vr){
+            turlet = (360 + turlet + vr)%360;
+        }
+
         this.vector = function(){
             return turlet;//turVector[turlet];
         }
@@ -77,6 +83,7 @@ function GameObject(){
         ArmorR = {sp:g.sprite.itemCreate("ARMOR_P", true, 32, 32), re:false};
 
         reexf = false;
+        blmode = false;
 
         Friend.sp.dispose(); Friend.re = true; 
         FriendT.sp.dispose(); FriendT.re = true;
@@ -100,7 +107,7 @@ function GameObject(){
                 this.triggerDelay = g.time()+250;
 
                 //let n = g.sprite.get();//空値の場合は未使用スプライトの番号を返す。
-                let sp = g.sprite.itemCreate("BULLET_P", true, 8, 8);
+                let sp = g.sprite.itemCreate(((blmode)?"BULLET_P2":"BULLET_P"), true, 8, 8);
 
                 let r =  this.turlet.vector();
                 let px = this.x + Math.cos((Math.PI/180)*r)*16
@@ -174,6 +181,9 @@ function GameObject(){
                         FriendT = {sp:g.sprite.itemCreate("Turlet", false, 32, 32) , re:false};
                     }
                 }
+                if ((this.spriteItem.mode&8) != 0){
+                    blmode = (blmode)?false:true;
+                }
                 this.spriteItem.mode =0;
             }
             reexf = false;//爆発済みf
@@ -187,6 +197,7 @@ function GameObject(){
                 if (ArmorF.sp.living) ArmorF.sp.dispose();
                 if (ArmorL.sp.living) ArmorL.sp.dispose();
                 if (ArmorR.sp.living) ArmorR.sp.dispose();
+                blmode = false;
             }
         }
 
@@ -257,6 +268,9 @@ function GameObject(){
             op.r[op.ptr] = this.turlet.vector();
             op.ptr++;
             op.ptr = op.ptr % op.x.length; 
+        }else{
+            if (input.left) this.turlet.move(-1);
+            if (input.right) this.turlet.move(1);
         }
     }
     
@@ -393,8 +407,12 @@ function GameObject(){
             } 
         }
         g.screen[0].putFunc(w);
-
-        
+        /*
+        let st = this.spriteItem.debug();
+        for (let i in st){
+            g.kanji.print(st[i],0, i*8);
+        }
+        */
     }
 
     function explose(g, x, y, sr=0, w=360){
@@ -725,12 +743,12 @@ function GameObj_GradeUpItem(){
     this.draw = function(g){
 
         const st  = [
-            [" --","正面","側面","子機"]
-            ,["None","FWD","SIDE"," OPT"]
+            [" --","正面","側面","子機","弾種"]
+            ,["None","FWD","SIDE"," OPT","CHNG"]
         ];
         const col = [
-            ["black","peru","navy","teal"]
-            ,["rgb(64,64,64)","orange","blue","green"]
+            ["black","peru","navy","teal","indigo"]
+            ,["rgb(64,64,64)","orange","blue","green","blueviolet"]
         
         ];
 

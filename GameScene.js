@@ -237,7 +237,7 @@ function SceneGame(){
 					let spitem = c[lp];//SpNo指定の場合は、SpriteItem
 					if (!spitem.visible) continue;
 
-					if (spitem.id == "BULLET_P"){
+					if (spitem.id.substring(0,8) == "BULLET_P"){
 						//spitem.vx = spitem.x - myship.x//vx*-1;//.05;
 						//spitem.vy = spitem.y - myship.y//spitem.vy*-1;//.05;
 	//					console.log("h" + spitem.id);
@@ -256,7 +256,7 @@ function SceneGame(){
 			}
 
 			//弾の相殺
-			if (sp.id == "BULLET_P"){
+			if (sp.id.substring(0,8) == "BULLET_P"){
 				let c = sp.hit;
 				for (let lp in c) {
 					let spitem = c[lp];//SpNo指定の場合は、SpriteItem
@@ -276,7 +276,7 @@ function SceneGame(){
 					let spitem = c[lp];//SpNo指定の場合は、SpriteItem
 					if (!spitem.visible) continue;
 
-					if (spitem.id == "BULLET_P"){
+					if (sp.id.substring(0,8) == "BULLET_P"){
 						stageCtrl.mapDamage(sp);
 						sp.dispose();
 						spitem.dispose();
@@ -290,7 +290,7 @@ function SceneGame(){
 					let spitem = c[lp];//SpNo指定の場合は、SpriteItem
 					if (!spitem.visible) continue;
 
-					if (spitem.id == "BULLET_P"){
+					if (spitem.id.substring(0,8) == "BULLET_P"){
 						//console.log("in:" + sp.mode);	
 						sp.mode++;
 						/*
@@ -302,7 +302,7 @@ function SceneGame(){
 						}
 						*/
 						//console.log("pwr "+ sp.mode);
-						if (sp.mode>3)  sp.mode = 0;
+						if (sp.mode>4)  sp.mode = 0;
 						spitem.dispose();
 					}
 					
