@@ -50,7 +50,8 @@ function GameObject(){
 		}
 
         this.move = function(vr){
-            turlet = (360 + turlet + vr)%360;
+            let wn = (turlet == 0)?360:0; 
+            turlet = (turlet + vr)%360;
         }
 
         this.vector = function(){

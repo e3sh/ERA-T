@@ -56,10 +56,9 @@ function GameSpriteControl(g) {
         this.alive = 0;
         this.index = 0; 
         this.living = true;
-
         this.normalDrawEnable = true;;
      
-        this.customDraw = function(g){};
+        this.customDraw = function(_buffer){};
         this.moveFunc;
 
         this.view = function (){ this.visible = true; }
@@ -78,8 +77,7 @@ function GameSpriteControl(g) {
             this.alive = aliveTime;
         }
 
-        this.moveFunc = //normal_move;
-
+        this.moveFunc = normal_move;//normal_move;
         function normal_move(){
             this.alive--;
 
@@ -135,6 +133,8 @@ function GameSpriteControl(g) {
             this.index = 0; 
             this.living = true;
             this.normalDrawEnable = true;
+            this.customDraw = function(buffer_){};
+            this.moveFunc = normal_move;
         }
 
         this.debug = function(){
@@ -330,13 +330,17 @@ function GameSpriteControl(g) {
 
                 //buffer_.fillText(i + " " + sw.visible, sw.x, sw.y);
                 if (sw.visible) {
-                    if (!Boolean(pattern_[sw.id])) {
-                        buffer_.fillText(i + " " + sw.count, sw.x, sw.y);
-                    } else {
-                        spPut(pattern_[sw.id].image, pattern_[sw.id].pattern[sw.pcnt], sw.x, sw.y, sw.r, sw.z);
-                        sw.count++;
-                        if (sw.count > pattern_[sw.id].wait) { sw.count = 0; sw.pcnt++; }
-                        if (sw.pcnt > pattern_[sw.id].pattern.length - 1) { sw.pcnt = 0; }
+                    sw.customDraw(buffer_);
+
+                    if (sw.normalDrawEnable){
+                        if (!Boolean(pattern_[sw.id])) {
+                            buffer_.fillText(i + " " + sw.count, sw.x, sw.y);
+                        } else {
+                            spPut(pattern_[sw.id].image, pattern_[sw.id].pattern[sw.pcnt], sw.x, sw.y, sw.r, sw.z);
+                            sw.count++;
+                            if (sw.count > pattern_[sw.id].wait) { sw.count = 0; sw.pcnt++; }
+                            if (sw.pcnt > pattern_[sw.id].pattern.length - 1) { sw.pcnt = 0; }
+                        }
                     }
                 }
             }
