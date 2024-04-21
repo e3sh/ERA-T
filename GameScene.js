@@ -290,22 +290,11 @@ function SceneGame(){
 					let spitem = c[lp];//SpNo指定の場合は、SpriteItem
 					if (!spitem.visible) continue;
 
-					if (spitem.id.substring(0,8) == "BULLET_P"){
-						//console.log("in:" + sp.mode);	
+					if (spitem.id.substring(0,7) == "BULLET_"){
 						sp.mode++;
-						/*
-						if (isNaN(sp.mode)){
-							sp.mode++;
-						}else{
-							sp.mode=0;
-							console.log("pwr "+ sp.mode);
-						}
-						*/
-						//console.log("pwr "+ sp.mode);
 						if (sp.mode>4)  sp.mode = 0;
 						spitem.dispose();
 					}
-					
 					if (spitem.id == sp.id){
 						if (Math.trunc(spitem.x) == Math.trunc(sp.x)
 							 && Math.trunc(spitem.y) == Math.trunc(sp.y)){

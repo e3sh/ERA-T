@@ -1,8 +1,14 @@
 // GameSpriteControl
 // BLOCKDROP operation Version 
-// (editstart 2024/04/12)
+// (editstart 2024/04/12) /r2: ERT-T op ver 2024/04/21
 
 /*
+//r2 new future
+.normalDrawEnable (true/false)
+.customDraw(g,screen){}
+.moveFunc
+example. ERT-T GameObj_GradeUpItem()
+
 //system Method
 .manualDraw = function (bool) (modeChange)
 .useScreen = function( num )
@@ -34,6 +40,7 @@ function GameSpriteControl(g) {
     let pattern_ = [];
 
     let buffer_;
+    let activeScreen;
 
     let autoDrawMode = true;
 
@@ -56,9 +63,10 @@ function GameSpriteControl(g) {
         this.alive = 0;
         this.index = 0; 
         this.living = true;
-        this.normalDrawEnable = true;;
+        this.normalDrawEnable = true;
+        this.beforeCustomDraw = false;
      
-        this.customDraw = function(_buffer){};
+        this.customDraw = function(g, screen){};
         this.moveFunc;
 
         this.view = function (){ this.visible = true; }
@@ -133,33 +141,31 @@ function GameSpriteControl(g) {
             this.index = 0; 
             this.living = true;
             this.normalDrawEnable = true;
-            this.customDraw = function(buffer_){};
+            this.customDraw = function(g,screen){};
+            this.beforeCustomDraw = false;
             this.moveFunc = normal_move;
         }
 
         this.debug = function(){
+
             let st = [];
+            const o = Object.entries(this);
 
-            st.push("this.x," + this.x);
-            st.push("this.y," + this.y);
-            st.push("this.r," + this.r);
-            st.push("this.z," + this.z);
-            st.push("this.vx," + this.vx);
-            st.push("this.vy," + this.vy);
-            st.push("this.priority," + this.priority);
-            st.push("this.collisionEnable," + this.collisionEnable);
-            st.push("this.collision," +this.collision);
-            st.push("this.id," + this.id);
-            st.push("this.count," +this.count);
-            st.push("this.pcnt," +this.pcnt);
-            st.push("this.visible," + this.visible);
-            st.push("this.hit," + this.hit);
-            st.push("this.alive," + this.alive);
-            st.push("this.index," + this.index); 
-            st.push("this.living," + this.living);
-            st.push("this.normalDrawEnable," + this.normalDrawEnable);
+            o.forEach(function(element){
+                let w = String(element).split(",");
 
-            return st;            
+                let s = w[0];
+                if (s.length < 13){
+                    s = s + " ".repeat(13);
+                    s = s.substring(0, 13);
+                }
+                let s2 = w[1].substring(0, 15);
+                st.push("."+ s + ":" + s2);
+            });
+            st.push("");
+            st.push("Object.entries end.");
+    
+            return st;
         }
     }
     //New add Methods ============================
@@ -211,7 +217,9 @@ function GameSpriteControl(g) {
     }
 
     this.useScreen = function( num ){
-        buffer_ = g.screen[num].buffer;
+        //buffer_ = g.screen[num].buffer;
+        activeScreen = g.screen[num];
+        buffer_ = activeScreen.buffer;
     }
 
     this.setPattern = function (id, Param) {
@@ -330,8 +338,7 @@ function GameSpriteControl(g) {
 
                 //buffer_.fillText(i + " " + sw.visible, sw.x, sw.y);
                 if (sw.visible) {
-                    sw.customDraw(buffer_);
-
+                    if (sw.beforeCustomDraw) sw.customDraw(g, activeScreen);
                     if (sw.normalDrawEnable){
                         if (!Boolean(pattern_[sw.id])) {
                             buffer_.fillText(i + " " + sw.count, sw.x, sw.y);
@@ -342,6 +349,7 @@ function GameSpriteControl(g) {
                             if (sw.pcnt > pattern_[sw.id].pattern.length - 1) { sw.pcnt = 0; }
                         }
                     }
+                    if (!sw.beforeCustomDraw) sw.customDraw(g, activeScreen);
                 }
             }
         }

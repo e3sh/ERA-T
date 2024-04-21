@@ -50,7 +50,6 @@ function GameObject(){
 		}
 
         this.move = function(vr){
-            let wn = (turlet == 0)?360:0; 
             turlet = (turlet + vr)%360;
         }
 
@@ -75,6 +74,7 @@ function GameObject(){
         this.spriteItem.mode = 0;
 
         MyTurlet = {sp:g.sprite.itemCreate("Turlet", false, 32, 32) , re:false};
+        MyTurlet.sp.customDraw = customDraw_turlet;
         MyTurlet.sp.priority = 1;
 
         Friend = {sp:g.sprite.itemCreate("FRIEND_P", true, 32, 32) , re:false};
@@ -229,19 +229,6 @@ function GameObject(){
             this.spriteItem.wall = false;
         }
 
-        /*
-        this.old_x = this.x;
-        this.old_y = this.y;
-
-        this.x = this.x + vx;
-        this.y = this.y + vy;
-
-        if (this.x < 32)	this.x = 32;
-        if (this.x > RESO_X-32)	this.x = RESO_X-32;
-        if (this.y < 32)	this.y = 32;
-        if (this.y > RESO_Y-32)	this.y = RESO_Y-32;
-        */
-
         if (reexf) return;
 
         if (!lock) this.turlet.check(this.r);
@@ -372,6 +359,7 @@ function GameObject(){
         this.spriteItem.view();
         if (MyTurlet.sp.living){
             MyTurlet.sp.pos(tx, ty, (this.turlet.vector()+90)% 360, 1); 
+            MyTurlet.sp.r = (this.turlet.vector()+90)% 360;
             MyTurlet.sp.view();
         }
 
@@ -392,7 +380,7 @@ function GameObject(){
         }
         g.screen[0].putFunc(w);
         */
-        
+        /*
         w = {x:this.x, y:this.y, c:"white", r:this.turlet.vector()
         , draw(dev){
             dev.beginPath();
@@ -423,6 +411,24 @@ function GameObject(){
             sp.pos(x, y, r);
             sp.move(r, 2, 30);// number, r, speed, lifetime//
         }
+    }
+
+    function customDraw_turlet(g, screen){
+        w = {x:this.x, y:this.y, c:"white", r:this.r-90
+        , draw(dev){
+            dev.beginPath();
+            //dev.fillStyle = this.c;
+            dev.strokeStyle = this.c;
+            dev.lineWidth = 2;
+            //dev.arc(this.x, this.y, 6, 0, 2 * Math.PI, false);
+            //dev.fill();
+            //dev.stroke();
+            dev.moveTo(this.x + Math.cos((this.r)*(Math.PI/180))*12, this.y + Math.sin((this.r)*(Math.PI/180))*12);
+            dev.lineTo(this.x + Math.cos((this.r)*(Math.PI/180))*24, this.y + Math.sin((this.r)*(Math.PI/180))*24);
+            dev.stroke();
+            } 
+        }
+        screen.putFunc(w);
     }
 }
 
@@ -631,7 +637,7 @@ function GameObj_GradeUpItem(){
 
     const RESO_X = 640;
 	const RESO_Y = 480-16;
-
+    /*
     this.r = 0;
     this.vr = 0;
     this.x = 0;
@@ -639,7 +645,7 @@ function GameObj_GradeUpItem(){
 
     this.old_X = 0;
     this.old_y = 0;
-
+    */
     this.triggerDelay = 0;
 
     let status = {speed:0, charge:0, power:0 };
@@ -651,19 +657,29 @@ function GameObj_GradeUpItem(){
     let reexf;
 
     this.init = function(g){
-
+        /*
         this.r = this.spriteItem.r;
         this.vr = 0;
         this.x =  this.spriteItem.x;
         this.y =  this.spriteItem.y;
         this.old_X = this.x;
         this.old_y = this.y;
+        */
         this.triggerDelay = 0;
 
         this.mode = 0;
         this.spriteItem.mode = this.mode;
+        this.spriteItem.drawDesignData = drawDesignData;
+        this.spriteItem.blink = true;
   
         reexf = false;
+
+        this.spriteItem.normalDrawEnable = false;
+        this.spriteItem.customDraw = customDraw;
+
+        this.spriteItem.moveFunc = function(){
+            this.alive--; this.x += this.vx; this.y += this.vy;
+        }
     }
 
     function vecToR(wx, wy){
@@ -696,7 +712,7 @@ function GameObj_GradeUpItem(){
     this.step = function(g, input, result) {
         //console.log("pw-run" + this.triggerDelay );
         if (result.clrf && (result.time + 750 > g.time())){
-            let r = Search(g, this.x, this.y);
+            let r = Search(g, this.spriteItem.x, this.spriteItem.y);
             this.spriteItem.move((r+260)%360,4,1);
         }
 
@@ -711,6 +727,8 @@ function GameObj_GradeUpItem(){
                 //modechange
 
                 this.blink = (this.blink)?false:true;
+                this.spriteItem.blink = this.blink;
+
             }
             /*
             if (result.clrf && (result.time + 750 > g.time())){
@@ -731,45 +749,55 @@ function GameObj_GradeUpItem(){
         if (reexf) return;
 
         //if (!lock) this.turlet.check(this.r);
-        this.x = this.spriteItem.x;
-        this.y = this.spriteItem.y;
-        this.r = this.spriteItem.r;
+        const x = this.spriteItem.x;
+        const y = this.spriteItem.y;
+        const r = this.spriteItem.r;
 
-        if (this.x < 32)	this.spriteItem.x = 32;
-        if (this.x > RESO_X-32)	this.spriteItem.x = RESO_X-32;
-        if (this.y < 32)	this.spriteItem.y = 32;
-        if (this.y > RESO_Y-32)	this.spriteItem.y = RESO_Y-32;
+        if (x < 32)	this.spriteItem.x = 32;
+        if (x > RESO_X-32)	this.spriteItem.x = RESO_X-32;
+        if (y < 32)	this.spriteItem.y = 32;
+        if (y > RESO_Y-32)	this.spriteItem.y = RESO_Y-32;
     }
 
     this.draw = function(g){
 
-        const st  = [
+        if (this.spriteItem.living){
+            this.spriteItem.view();
+
+            //debug Draw
+           /*
+            const x = this.spriteItem.x;
+            const y = this.spriteItem.y;
+            let st = this.spriteItem.debug();
+            for (let i in st){g.kanji.print(st[i],0,i*8);}
+           */
+        }
+    }
+
+    const drawDesignData = {
+        str: [
             [" --","正面","側面","子機","弾種"]
             ,["None","FWD","SIDE"," OPT","CHNG"]
-        ];
-        const col = [
+        ]
+        ,color: [
             ["black","peru","navy","teal","indigo"]
             ,["rgb(64,64,64)","orange","blue","green","blueviolet"]
-        
-        ];
+        ]
+    }
 
-        //console.log("pw-draw" + this.triggerDelay );
+    function customDraw(g, screen){
+
+        const st  = this.drawDesignData.str;
+        const col = this.drawDesignData.color;
 
         let n = (this.blink)?0:1;
 
-        if (this.spriteItem.living){
-            this.spriteItem.view();
-            let p = this.spriteItem;
-            const x = Math.trunc(p.x - p.collision.w/2);
-            const y = Math.trunc(p.y - p.collision.h/2);
-            const w = p.collision.w;
-            const h = p.collision.h;
-            g.screen[0].fill(x, y, w, h, "white");
-            g.screen[0].fill(x+1, y+1, w-2, h-2, col[n][ this.mode ]);
-            g.kanji.print(st[n][this.mode], x+2, y+4);
-            //console.log(this.mode + "," );
-            //console.log("x," + p.x + "," + p.collision.w/2   );
-            //console.log("y," + p.y + "," +  p.collision.h/2 );
-        }
+        const x = Math.trunc(this.x - this.collision.w/2);
+        const y = Math.trunc(this.y - this.collision.h/2);
+        const w = this.collision.w;
+        const h = this.collision.h;
+        screen.fill(x, y, w, h, "white");
+        screen.fill(x+1, y+1, w-2, h-2, col[n][ this.mode ]);
+        g.kanji.print(st[n][this.mode], x+2, y+4);
     }
 } 
