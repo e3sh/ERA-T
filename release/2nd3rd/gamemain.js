@@ -50,7 +50,7 @@ function GameObject(){
 		}
 
         this.move = function(vr){
-            turlet = (turlet + vr)%360;
+            turlet = (360 + turlet + vr)%360;
         }
 
         this.vector = function(){
@@ -74,7 +74,6 @@ function GameObject(){
         this.spriteItem.mode = 0;
 
         MyTurlet = {sp:g.sprite.itemCreate("Turlet", false, 32, 32) , re:false};
-        MyTurlet.sp.customDraw = customDraw_turlet;
         MyTurlet.sp.priority = 1;
 
         Friend = {sp:g.sprite.itemCreate("FRIEND_P", true, 32, 32) , re:false};
@@ -229,6 +228,19 @@ function GameObject(){
             this.spriteItem.wall = false;
         }
 
+        /*
+        this.old_x = this.x;
+        this.old_y = this.y;
+
+        this.x = this.x + vx;
+        this.y = this.y + vy;
+
+        if (this.x < 32)	this.x = 32;
+        if (this.x > RESO_X-32)	this.x = RESO_X-32;
+        if (this.y < 32)	this.y = 32;
+        if (this.y > RESO_Y-32)	this.y = RESO_Y-32;
+        */
+
         if (reexf) return;
 
         if (!lock) this.turlet.check(this.r);
@@ -359,7 +371,6 @@ function GameObject(){
         this.spriteItem.view();
         if (MyTurlet.sp.living){
             MyTurlet.sp.pos(tx, ty, (this.turlet.vector()+90)% 360, 1); 
-            MyTurlet.sp.r = (this.turlet.vector()+90)% 360;
             MyTurlet.sp.view();
         }
 
@@ -380,7 +391,7 @@ function GameObject(){
         }
         g.screen[0].putFunc(w);
         */
-        /*
+        
         w = {x:this.x, y:this.y, c:"white", r:this.turlet.vector()
         , draw(dev){
             dev.beginPath();
@@ -411,24 +422,6 @@ function GameObject(){
             sp.pos(x, y, r);
             sp.move(r, 2, 30);// number, r, speed, lifetime//
         }
-    }
-
-    function customDraw_turlet(g, screen){
-        w = {x:this.x, y:this.y, c:"white", r:this.r-90
-        , draw(dev){
-            dev.beginPath();
-            //dev.fillStyle = this.c;
-            dev.strokeStyle = this.c;
-            dev.lineWidth = 2;
-            //dev.arc(this.x, this.y, 6, 0, 2 * Math.PI, false);
-            //dev.fill();
-            //dev.stroke();
-            dev.moveTo(this.x + Math.cos((this.r)*(Math.PI/180))*12, this.y + Math.sin((this.r)*(Math.PI/180))*12);
-            dev.lineTo(this.x + Math.cos((this.r)*(Math.PI/180))*24, this.y + Math.sin((this.r)*(Math.PI/180))*24);
-            dev.stroke();
-            } 
-        }
-        screen.putFunc(w);
     }
 }
 
@@ -637,7 +630,7 @@ function GameObj_GradeUpItem(){
 
     const RESO_X = 640;
 	const RESO_Y = 480-16;
-    /*
+
     this.r = 0;
     this.vr = 0;
     this.x = 0;
@@ -645,44 +638,31 @@ function GameObj_GradeUpItem(){
 
     this.old_X = 0;
     this.old_y = 0;
-    */
+
     this.triggerDelay = 0;
 
     let status = {speed:0, charge:0, power:0 };
 
     this.mode = 0;
     this.blink = true;
-    this.barth = true;
 
     this.spriteItem;
     let reexf;
 
     this.init = function(g){
-        /*
+
         this.r = this.spriteItem.r;
         this.vr = 0;
         this.x =  this.spriteItem.x;
         this.y =  this.spriteItem.y;
         this.old_X = this.x;
         this.old_y = this.y;
-        */
-        this.triggerDelay = g.time()+250;
+        this.triggerDelay = 0;
 
         this.mode = 0;
-        this.barth = true;
-
         this.spriteItem.mode = this.mode;
-        this.spriteItem.drawDesignData = drawDesignData;
-        this.spriteItem.blink = true;
   
         reexf = false;
-
-        this.spriteItem.normalDrawEnable = false;
-        this.spriteItem.customDraw = customDraw;
-
-        this.spriteItem.moveFunc = function(){
-            this.alive--; this.x += this.vx; this.y += this.vy;
-        }
     }
 
     function vecToR(wx, wy){
@@ -713,10 +693,9 @@ function GameObj_GradeUpItem(){
     }
 
     this.step = function(g, input, result) {
-        this.spriteItem.collisionEnable = !this.barth;
         //console.log("pw-run" + this.triggerDelay );
         if (result.clrf && (result.time + 750 > g.time())){
-            let r = Search(g, this.spriteItem.x, this.spriteItem.y);
+            let r = Search(g, this.x, this.y);
             this.spriteItem.move((r+260)%360,4,1);
         }
 
@@ -731,9 +710,6 @@ function GameObj_GradeUpItem(){
                 //modechange
 
                 this.blink = (this.blink)?false:true;
-                this.spriteItem.blink = this.blink;
-
-                this.barth = false;
             }
             /*
             if (result.clrf && (result.time + 750 > g.time())){
@@ -754,56 +730,46 @@ function GameObj_GradeUpItem(){
         if (reexf) return;
 
         //if (!lock) this.turlet.check(this.r);
-        const x = this.spriteItem.x;
-        const y = this.spriteItem.y;
-        const r = this.spriteItem.r;
+        this.x = this.spriteItem.x;
+        this.y = this.spriteItem.y;
+        this.r = this.spriteItem.r;
 
-        if (x < 32)	this.spriteItem.x = 32;
-        if (x > RESO_X-32)	this.spriteItem.x = RESO_X-32;
-        if (y < 32)	this.spriteItem.y = 32;
-        if (y > RESO_Y-32)	this.spriteItem.y = RESO_Y-32;
+        if (this.x < 32)	this.spriteItem.x = 32;
+        if (this.x > RESO_X-32)	this.spriteItem.x = RESO_X-32;
+        if (this.y < 32)	this.spriteItem.y = 32;
+        if (this.y > RESO_Y-32)	this.spriteItem.y = RESO_Y-32;
     }
 
     this.draw = function(g){
 
-        if (this.spriteItem.living){
-            this.spriteItem.view();
-
-            //debug Draw
-           /*
-            const x = this.spriteItem.x;
-            const y = this.spriteItem.y;
-            let st = this.spriteItem.debug();
-            for (let i in st){g.kanji.print(st[i],0,i*8);}
-           */
-        }
-    }
-
-    const drawDesignData = {
-        str: [
+        const st  = [
             [" --","正面","側面","子機","弾種"]
             ,["None","FWD","SIDE"," OPT","CHNG"]
-        ]
-        ,color: [
+        ];
+        const col = [
             ["black","peru","navy","teal","indigo"]
             ,["rgb(64,64,64)","orange","blue","green","blueviolet"]
-        ]
-    }
+        
+        ];
 
-    function customDraw(g, screen){
-
-        const st  = this.drawDesignData.str;
-        const col = this.drawDesignData.color;
+        //console.log("pw-draw" + this.triggerDelay );
 
         let n = (this.blink)?0:1;
 
-        const x = Math.trunc(this.x - this.collision.w/2);
-        const y = Math.trunc(this.y - this.collision.h/2);
-        const w = this.collision.w;
-        const h = this.collision.h;
-        screen.fill(x, y, w, h, "white");
-        screen.fill(x+1, y+1, w-2, h-2, col[n][ this.mode ]);
-        g.kanji.print(st[n][this.mode], x+2, y+4);
+        if (this.spriteItem.living){
+            this.spriteItem.view();
+            let p = this.spriteItem;
+            const x = Math.trunc(p.x - p.collision.w/2);
+            const y = Math.trunc(p.y - p.collision.h/2);
+            const w = p.collision.w;
+            const h = p.collision.h;
+            g.screen[0].fill(x, y, w, h, "white");
+            g.screen[0].fill(x+1, y+1, w-2, h-2, col[n][ this.mode ]);
+            g.kanji.print(st[n][this.mode], x+2, y+4);
+            //console.log(this.mode + "," );
+            //console.log("x," + p.x + "," + p.collision.w/2   );
+            //console.log("y," + p.y + "," +  p.collision.h/2 );
+        }
     }
 } //----------------------------------------------------------------------
 //Scene
@@ -1051,7 +1017,7 @@ function SceneGame(){
 						stageCtrl.mapDamage(sp);
 	
 						let powup = new GameObj_GradeUpItem();
-						powup.spriteItem = g.sprite.itemCreate("POWERUP", false, 28, 16);
+						powup.spriteItem = g.sprite.itemCreate("POWERUP", true, 28, 16);
 						powup.spriteItem.pos(sp.x,sp.y);
 						powup.init(g);
 				
@@ -1097,11 +1063,22 @@ function SceneGame(){
 					let spitem = c[lp];//SpNo指定の場合は、SpriteItem
 					if (!spitem.visible) continue;
 
-					if (spitem.id.substring(0,7) == "BULLET_"){
+					if (spitem.id.substring(0,8) == "BULLET_P"){
+						//console.log("in:" + sp.mode);	
 						sp.mode++;
+						/*
+						if (isNaN(sp.mode)){
+							sp.mode++;
+						}else{
+							sp.mode=0;
+							console.log("pwr "+ sp.mode);
+						}
+						*/
+						//console.log("pwr "+ sp.mode);
 						if (sp.mode>4)  sp.mode = 0;
 						spitem.dispose();
 					}
+					
 					if (spitem.id == sp.id){
 						if (Math.trunc(spitem.x) == Math.trunc(sp.x)
 							 && Math.trunc(spitem.y) == Math.trunc(sp.y)){
@@ -1813,15 +1790,9 @@ function SceneGPad(){
 }
 // GameSpriteControl
 // BLOCKDROP operation Version 
-// (editstart 2024/04/12) /r2: ERT-T op ver 2024/04/21
+// (editstart 2024/04/12)
 
 /*
-//r2 new future
-.normalDrawEnable (true/false)
-.customDraw(g,screen){}
-.moveFunc
-example. ERT-T GameObj_GradeUpItem()
-
 //system Method
 .manualDraw = function (bool) (modeChange)
 .useScreen = function( num )
@@ -1853,7 +1824,6 @@ function GameSpriteControl(g) {
     let pattern_ = [];
 
     let buffer_;
-    let activeScreen;
 
     let autoDrawMode = true;
 
@@ -1876,10 +1846,10 @@ function GameSpriteControl(g) {
         this.alive = 0;
         this.index = 0; 
         this.living = true;
-        this.normalDrawEnable = true;
-        this.beforeCustomDraw = false;
+
+        this.normalDrawEnable = true;;
      
-        this.customDraw = function(g, screen){};
+        this.customDraw = function(g){};
         this.moveFunc;
 
         this.view = function (){ this.visible = true; }
@@ -1898,7 +1868,8 @@ function GameSpriteControl(g) {
             this.alive = aliveTime;
         }
 
-        this.moveFunc = normal_move;//normal_move;
+        this.moveFunc = //normal_move;
+
         function normal_move(){
             this.alive--;
 
@@ -1954,31 +1925,31 @@ function GameSpriteControl(g) {
             this.index = 0; 
             this.living = true;
             this.normalDrawEnable = true;
-            this.customDraw = function(g,screen){};
-            this.beforeCustomDraw = false;
-            this.moveFunc = normal_move;
         }
 
         this.debug = function(){
-
             let st = [];
-            const o = Object.entries(this);
 
-            o.forEach(function(element){
-                let w = String(element).split(",");
+            st.push("this.x," + this.x);
+            st.push("this.y," + this.y);
+            st.push("this.r," + this.r);
+            st.push("this.z," + this.z);
+            st.push("this.vx," + this.vx);
+            st.push("this.vy," + this.vy);
+            st.push("this.priority," + this.priority);
+            st.push("this.collisionEnable," + this.collisionEnable);
+            st.push("this.collision," +this.collision);
+            st.push("this.id," + this.id);
+            st.push("this.count," +this.count);
+            st.push("this.pcnt," +this.pcnt);
+            st.push("this.visible," + this.visible);
+            st.push("this.hit," + this.hit);
+            st.push("this.alive," + this.alive);
+            st.push("this.index," + this.index); 
+            st.push("this.living," + this.living);
+            st.push("this.normalDrawEnable," + this.normalDrawEnable);
 
-                let s = w[0];
-                if (s.length < 13){
-                    s = s + " ".repeat(13);
-                    s = s.substring(0, 13);
-                }
-                let s2 = w[1].substring(0, 15);
-                st.push("."+ s + ":" + s2);
-            });
-            st.push("");
-            st.push("Object.entries end.");
-    
-            return st;
+            return st;            
         }
     }
     //New add Methods ============================
@@ -2030,9 +2001,7 @@ function GameSpriteControl(g) {
     }
 
     this.useScreen = function( num ){
-        //buffer_ = g.screen[num].buffer;
-        activeScreen = g.screen[num];
-        buffer_ = activeScreen.buffer;
+        buffer_ = g.screen[num].buffer;
     }
 
     this.setPattern = function (id, Param) {
@@ -2151,18 +2120,14 @@ function GameSpriteControl(g) {
 
                 //buffer_.fillText(i + " " + sw.visible, sw.x, sw.y);
                 if (sw.visible) {
-                    if (sw.beforeCustomDraw) sw.customDraw(g, activeScreen);
-                    if (sw.normalDrawEnable){
-                        if (!Boolean(pattern_[sw.id])) {
-                            buffer_.fillText(i + " " + sw.count, sw.x, sw.y);
-                        } else {
-                            spPut(pattern_[sw.id].image, pattern_[sw.id].pattern[sw.pcnt], sw.x, sw.y, sw.r, sw.z);
-                            sw.count++;
-                            if (sw.count > pattern_[sw.id].wait) { sw.count = 0; sw.pcnt++; }
-                            if (sw.pcnt > pattern_[sw.id].pattern.length - 1) { sw.pcnt = 0; }
-                        }
+                    if (!Boolean(pattern_[sw.id])) {
+                        buffer_.fillText(i + " " + sw.count, sw.x, sw.y);
+                    } else {
+                        spPut(pattern_[sw.id].image, pattern_[sw.id].pattern[sw.pcnt], sw.x, sw.y, sw.r, sw.z);
+                        sw.count++;
+                        if (sw.count > pattern_[sw.id].wait) { sw.count = 0; sw.pcnt++; }
+                        if (sw.pcnt > pattern_[sw.id].pattern.length - 1) { sw.pcnt = 0; }
                     }
-                    if (!sw.beforeCustomDraw) sw.customDraw(g, activeScreen);
                 }
             }
         }

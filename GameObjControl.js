@@ -652,6 +652,7 @@ function GameObj_GradeUpItem(){
 
     this.mode = 0;
     this.blink = true;
+    this.barth = true;
 
     this.spriteItem;
     let reexf;
@@ -665,9 +666,11 @@ function GameObj_GradeUpItem(){
         this.old_X = this.x;
         this.old_y = this.y;
         */
-        this.triggerDelay = 0;
+        this.triggerDelay = g.time()+250;
 
         this.mode = 0;
+        this.barth = true;
+
         this.spriteItem.mode = this.mode;
         this.spriteItem.drawDesignData = drawDesignData;
         this.spriteItem.blink = true;
@@ -710,6 +713,7 @@ function GameObj_GradeUpItem(){
     }
 
     this.step = function(g, input, result) {
+        this.spriteItem.collisionEnable = !this.barth;
         //console.log("pw-run" + this.triggerDelay );
         if (result.clrf && (result.time + 750 > g.time())){
             let r = Search(g, this.spriteItem.x, this.spriteItem.y);
@@ -729,6 +733,7 @@ function GameObj_GradeUpItem(){
                 this.blink = (this.blink)?false:true;
                 this.spriteItem.blink = this.blink;
 
+                this.barth = false;
             }
             /*
             if (result.clrf && (result.time + 750 > g.time())){

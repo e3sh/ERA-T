@@ -244,7 +244,7 @@ function SceneGame(){
 						stageCtrl.mapDamage(sp);
 	
 						let powup = new GameObj_GradeUpItem();
-						powup.spriteItem = g.sprite.itemCreate("POWERUP", true, 28, 16);
+						powup.spriteItem = g.sprite.itemCreate("POWERUP", false, 28, 16);
 						powup.spriteItem.pos(sp.x,sp.y);
 						powup.init(g);
 				
