@@ -84,9 +84,11 @@ function GameObj_Mine(){
         if (this.spriteItem.living){
 
             this.spriteItem.collisionEnable = (result.clrf)?false:true;
-            this.turlet.check(g, this.spriteItem.x, this.spriteItem.y);
-            if (this.triggerDelay < g.time()){
-                this.triggerDelay = g.time()+1000;
+
+            if (!result.clrf){//リザルト中には発射しない
+                this.turlet.check(g, this.spriteItem.x, this.spriteItem.y);
+                if (this.triggerDelay < g.time()){
+                    this.triggerDelay = g.time()+1000;
 
                     //let n = g.sprite.get();//空値の場合は未使用スプライトの番号を返す。
                     let sp = g.sprite.itemCreate("BULLET_P", true, 8, 8);
@@ -98,6 +100,7 @@ function GameObj_Mine(){
 
                     sp.pos(px, py, 0, 0.6 );
                     sp.move((r+90)% 360, 6, 3000);// number, r, speed, lifetime//3kf 5min
+                }
             }
             //自機生存状態
             reexf = false;//爆発済みf
