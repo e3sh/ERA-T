@@ -25,6 +25,7 @@ function GameObject(){
     let status = {speed:0, charge:0, power:0 };
 
     this.spriteItem;
+
     let reexf;
     let blmode = false;
 
@@ -72,7 +73,8 @@ function GameObject(){
         this.op.r.fill(0);
 
         this.spriteItem.mode = 0;
-
+        this.spriteItem.linkedOption = false;
+        
         MyTurlet = {sp:g.sprite.itemCreate("Turlet", false, 32, 32) , re:false};
         MyTurlet.sp.customDraw = customDraw_turlet;
         MyTurlet.sp.priority = 1;
@@ -203,9 +205,11 @@ function GameObject(){
         }
 
         if (Friend.sp.living){
+            this.spriteItem.linkedOption = true;
             //僚機が生きている状態
         }else{
             if (FriendT.sp.living) FriendT.sp.dispose();
+            this.spriteItem.linkedOption = false;
         }
 
         if (ArmorF.sp.living){
@@ -436,6 +440,8 @@ function GameObject(){
 function GameObj_Friend(){
 
 
+
+
 }
 
 function GameObj_Enemy(){
@@ -494,10 +500,15 @@ function GameObj_FlyCanon(){
 
     function Search(g, wx, wy){
         const l = g.sprite.itemList();
+        let d = 999;
         let c = -1;
         for (let i in l){
-            if (l[i].id  == "Player"){
-                c = i;
+            if (l[i].id  == "Player" || l[i].id  == "FRIEND_P"){
+                let wd = distance({x:wx, y:wy},l[i]);// console.log(wd); 
+                if (wd <= d) {
+                    c = i;
+                    d = wd;
+                }
             }
         }
         let rc = -1;
@@ -508,6 +519,10 @@ function GameObj_FlyCanon(){
             );
        }
        return rc;
+    }
+
+    function distance(s, t){
+        return Math.sqrt((Math.abs(t.x - s.x) * Math.abs(t.x - s.x)) + (Math.abs(t.y - s.y) * Math.abs(t.y - s.y)));
     }
 
     this.step = function(g, input, result) {
@@ -781,8 +796,8 @@ function GameObj_GradeUpItem(){
 
     const drawDesignData = {
         str: [
-            [" --","正面","側面","子機","弾種"]
-            ,["None","FWD","SIDE"," OPT","CHNG"]
+            ["得点","正面","側面","子機","弾種"]
+            ,[" 300","FWD","SIDE"," OPT","CHNG"]
         ]
         ,color: [
             ["black","peru","navy","teal","indigo"]

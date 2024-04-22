@@ -140,10 +140,28 @@ function SceneGame(){
 				}
 			}
 
+			if (result.score > (ene.max-2)*5000){//extend
+				//extend message
+				const msg = g.sprite.itemCreate("BULLET_P", false, 1, 1);
+				msg.priority = 5;
+				msg.normalDrawEnable = false;
+				msg.customDraw = function(g, screen){
+					let x = Math.trunc(this.x-28);
+					let y = Math.trunc(this.y);
+					screen.fill(x,y,48,8,"Black");
+					g.kanji.print("Extend.", x, y); 
+				};
+				msg.pos(myship.x, myship.y);
+				msg.move(0, 1, 45);
+
+				ene.now++; 
+				ene.max++;
+			}
+
 			if (ec == 0){ //(blkcnt <=0){ //Stage Clear;
-				let b = (10000-(g.time()-result.time));
-				
-				result.score += (b < 0)?100: b+100;//SCORE
+				//TimeBonus
+				//let b = (10000-(g.time()-result.time));
+				//result.score += (b < 0)?100: b+100;//SCORE
 				result.time = g.time();
 				result.stage ++;
 
@@ -227,6 +245,18 @@ function SceneGame(){
 								}
 							}
 						}
+						if (spitem.mode == 3){//Option(Mine)
+							
+							if (sp.linkedOption){ 
+								let opt = new GameObj_Mine();
+								opt.spriteItem = g.sprite.itemCreate("FRIEND_P", true, 24, 24);
+								opt.spriteItem.pos(sp.x,sp.y);
+								opt.init(g);
+								GObj.push(opt);
+							}
+						}
+
+						result.score += ((spitem.mode ==0)?300:0);
 						spitem.dispose();
 					}
 				}
@@ -251,6 +281,7 @@ function SceneGame(){
 						GObj.push(powup);
 						sp.dispose();
 						spitem.dispose();
+						result.score +=10;
 					}
 				}
 			}
@@ -293,6 +324,9 @@ function SceneGame(){
 					if (spitem.id.substring(0,7) == "BULLET_"){
 						sp.mode++;
 						if (sp.mode>4)  sp.mode = 0;
+
+						sp.x -= (spitem.x - sp.x)/5;
+						sp.y -= (spitem.y - sp.y)/5;
 						spitem.dispose();
 					}
 					if (spitem.id == sp.id){

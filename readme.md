@@ -5,10 +5,18 @@ THEMA UPGRADE,Reinforcement/DONICHI THREADE 16th
 
 *Repository版 動作確認URL:*
 https://e3sh.github.io/ERA-T/ERATANKdnc.html
-
+ 本リポリトジ　
 
 *Release版 動作確認URL:*
 https://e3sh.github.io/ERA-T/release/ERATANKdnc.html
+ 土日スレ提出分
+
+提出分との相違点
+
+    2024/04/22
+    ・残機エクステンド(5000点毎に1機追加)
+    ・パワーアップのNoneが得点アイテム、画面下部に得点が表示される
+    ・パワーアップのオプションがある場合に再度取得すると設置砲台が置かれる
 
 
 #### 提出先情報

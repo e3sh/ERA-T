@@ -192,7 +192,7 @@ function StageControl(game){
 								block[cy][cx].hit = false;//true;
 							}
 							p.dispose();
-							//result.score ++;
+							result.score ++;
 						}
 
 						if (p.id == "BULLET_P2"){
@@ -203,7 +203,7 @@ function StageControl(game){
 								block[cy][cx].hit = false;//true;
 							}
 							//p.dispose();
-							//result.score ++;
+							result.score ++;
 						}
 
 						if (p.id == "BULLET_E"){

@@ -33,7 +33,7 @@ function SceneGameUI(){
 	
 		let st="";for (let i=1; i<ene.now;i++)st+="▲";
 		g.kanji.print("PLAYER:" + st, X, Y);
-		g.kanji.print("STAGE :" + result.stage, X, Y+8);
+		g.kanji.print("STAGE :" + result.stage + " SCORE:" + Math.trunc(result.score),  X, Y+8);
 		//g.kanji.print("強化：[正面][側面][僚機]", X, Y+16);
 
 		//g.kanji.print("　　　[||| ][||| ][||| ][||| ][||| ]", X, Y+24);
@@ -122,10 +122,10 @@ function SceneTitle(){
 		,""
 		,""
 		,"敵を倒すと出てくるアップグレードパーツ(弾を当てて切り替え)"
-		,"[ -  /None] 効果なし "
+		,"[得点/300 ] 得点300点 (Extend5000点)"
 		,"[正面/FWD ] 正面追加装甲"
 		,"[側面/SIDE] 側面追加装甲"
-		,"[子機/ OPT] 有線ドローン(OPTION)"
+		,"[子機/ OPT] ターレット(1台目OPTION/以降 設置型)"
 		,"[弾種/CHNG] 弾の種類切り替え(通常<->ブロック貫通)"
 		,"  注：重複効果はありません。"
 	];
