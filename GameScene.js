@@ -107,28 +107,21 @@ function SceneGame(){
 		for (let o of GObj){
 			o.step(g, input, result);
 		}
-	
+
 		if (delay < g.time()) {
 
 			delay = g.time()+500;
 			//spriteTable = flashsp(spriteTable);
 
 			ene.before = ene.now;
-			result.clrf = false; 
+			//result.clrf = false; 
 
 			g.sprite.itemIndexRefresh();
 
 			let ec = 0;
 			let spt = g.sprite.itemList();
 			for (let o of spt) if (o.id == "Enemy") ec++;
-			/*
-			for (let o of spt){
-				if (!o.visible && o.alive==0){
-					if (o.id == "BULLET_P") o.dispose();
-					if (o.id == "BULLET_E") o.dispose();
-				}	
-			}
-			*/
+
 			if (!myship.spriteItem.living){//dead
 
 				ene.now--;
@@ -159,35 +152,40 @@ function SceneGame(){
 			}
 
 			if (ec == 0){ //(blkcnt <=0){ //Stage Clear;
-				//TimeBonus
-				//let b = (10000-(g.time()-result.time));
-				//result.score += (b < 0)?100: b+100;//SCORE
-				result.time = g.time();
-				result.stage ++;
+				if (result.clrf){
 
-				//GObj = [];
-				//GObj.push(myship);
-				let nextGo = [];
-				//nextGo.push(myship); 
-				for (let i in GObj){
-					if (GObj[i].spriteItem.living){
-						nextGo.push(GObj[i]);
+					//TimeBonus
+					//let b = (10000-(g.time()-result.time));
+					//result.score += (b < 0)?100: b+100;//SCORE
+					result.time = g.time();
+					result.stage ++;
+
+					//GObj = [];
+					//GObj.push(myship);
+					let nextGo = [];
+					//nextGo.push(myship); 
+					for (let i in GObj){
+						if (GObj[i].spriteItem.living){
+							nextGo.push(GObj[i]);
+						}
 					}
+					GObj = nextGo;
+
+					stageCtrl.change(result.stage, GObj);
+
+					//自爆破片の残骸が消えたまま残る問題の解消
+					let spt = g.sprite.itemList();
+					for (let o of spt){
+						if (o.id == "BULLET_P") o.dispose();
+						if (o.id == "BULLET_E") o.dispose();	
+					}
+					//ene.now = (ene.now +30>ene.max)?ene.max:ene.now +30;//ENERGY
+				}else{
+					result.clrf = true; 
+					delay = g.time()+3000;//MESSAGE WAIT
 				}
-				GObj = nextGo;
-
-				stageCtrl.change(result.stage, GObj);
-
-				//自爆破片の残骸が消えたまま残る問題の解消
-				let spt = g.sprite.itemList();
-				for (let o of spt){
-					if (o.id == "BULLET_P") o.dispose();
-					if (o.id == "BULLET_E") o.dispose();	
-				}
-				//ene.now = (ene.now +30>ene.max)?ene.max:ene.now +30;//ENERGY
-
-				result.clrf = true; 
-				delay = g.time()+1500;//MESSAGE WAIT
+			}else{
+				result.clrf = false; 
 			}
 
 			if (ene.now <=0){ //Game Over;

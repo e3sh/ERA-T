@@ -147,8 +147,11 @@ function GameObject(){
         if (result.clrf && (vx==0 && vy==0)){
             let t = g.time() - result.time
 
-            vx = Math.trunc((320 - this.x)/40);//*(1500-t);
-            vy = Math.trunc((320 - this.y)/40);//*(1500-t);
+            vx = (Math.abs(320 - this.x)/3 <1)?
+                Math.trunc((320 - this.x)):Math.trunc((320 - this.x)/3);
+
+            vy = (Math.abs(320 - this.y)/3 <1)?
+                Math.trunc((320 - this.y)):Math.trunc((320 - this.y)/3);
         }
 
         let wallf = false;
@@ -236,7 +239,7 @@ function GameObject(){
         if (reexf) return;
 
         if (!lock) this.turlet.check(this.r);
-        if (vx!=0 || vy!=0) {
+        if ((vx!=0 || vy!=0)||result.clrf) {
 
             this.old_x = Math.trunc(this.x);
             this.old_y = Math.trunc(this.y);
