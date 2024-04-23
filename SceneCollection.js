@@ -290,7 +290,7 @@ function SceneVGPad(){
 		g.screen[0].putFunc(cl);
 
 		for (let i in st){
-			g.font["8x8white"].putchr(st[i],X, Y+i*8);
+		//	g.font["8x8white"].putchr(st[i],X, Y+i*8);
 		}
 	}
 }
