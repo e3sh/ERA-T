@@ -244,8 +244,9 @@ function GameObject(){
             this.old_x = Math.trunc(this.x);
             this.old_y = Math.trunc(this.y);
 
-            this.x = this.x + vx;
-            this.y = this.y + vy;
+            let tajs = (g.deltaTime()/(1000/60));//speed DeltaTime ajust 60f base
+            this.x = this.x + (vx * tajs);
+            this.y = this.y + (vy * tajs);
 
             if (this.x < 32)	this.x = 32;
             if (this.x > RESO_X-32)	this.x = RESO_X-32;
@@ -255,7 +256,6 @@ function GameObject(){
             if (!result.clrf) this.r = this.turlet.vecToR(vx,vy);
 
             //console.log("x" + this.x + "y" + this.y + "r" + this.r);
-
 
             op = this.op;
             op.x[op.ptr] = Math.trunc(this.x);
@@ -369,40 +369,6 @@ function GameObject(){
             MyTurlet.sp.r = (this.turlet.vector()+90)% 360;
             MyTurlet.sp.view();
         }
-
-        //g.screen[0].fill(this.x-15, this.y-15,30,30,"orange");
-
-        /*
-        let w = {x:this.x, y:this.y, c:"blue", r:this.r
-        , draw(dev){
-            dev.beginPath();
-            dev.strokeStyle = this.c;
-            dev.lineWidth = 2;
-            //dev.arc(this.x, this.y, 4, 0, 2 * Math.PI, false);
-            //dev.stroke();
-            dev.moveTo(this.x, this.y);
-            dev.lineTo(this.x + Math.cos((this.r)*(Math.PI/180))*16, this.y + Math.sin((this.r)*(Math.PI/180))*16);
-            dev.stroke();
-            } 
-        }
-        g.screen[0].putFunc(w);
-        */
-        /*
-        w = {x:this.x, y:this.y, c:"white", r:this.turlet.vector()
-        , draw(dev){
-            dev.beginPath();
-            dev.fillStyle = this.c;
-            dev.strokeStyle = this.c;
-            dev.lineWidth = 2;
-            dev.arc(this.x, this.y, 6, 0, 2 * Math.PI, false);
-            dev.fill();
-            //dev.stroke();
-            dev.moveTo(this.x, this.y);
-            dev.lineTo(this.x + Math.cos((this.r)*(Math.PI/180))*24, this.y + Math.sin((this.r)*(Math.PI/180))*24);
-            dev.stroke();
-            } 
-        }
-        g.screen[0].putFunc(w);
         /*
         let st = this.spriteItem.debug();
         for (let i in st){
@@ -442,15 +408,9 @@ function GameObject(){
 
 
 function GameObj_Friend(){
-
-
-
-
 }
 
 function GameObj_Enemy(){
-
-    
 }
 
 function GameObj_FlyCanon(){
@@ -565,25 +525,10 @@ function GameObj_FlyCanon(){
         }
         let wallf = Boolean(this.spriteItem.wall)?((this.spriteItem.wall)?true:false):false;
         if (wallf){ 
-            //this.triggerDelay = g.time();
             this.r +=turn*5; this.r = this.r%360;
-            //this.triggerCount--;
-            //this.spriteItem.r = (this.spriteItem.r+360)%360;
-            //this.spriteItem.move(this.spriteItem.r, 3, 3000);
-            /*           
-            let sp = g.sprite.itemCreate("BULLET_E", true, 4, 4);
-            sp.pos(this.x, this.y, 0, 1);
-            sp.move(this.r, 3, 3000);// number, r, speed, lifetime//3kf 5min
-            sp = g.sprite.itemCreate("BULLET_E", true, 4, 4);
 
-            sp = g.sprite.itemCreate("BULLET_E", true, 4, 4);
-            sp.pos(this.x, this.y, 0, 1);
-            sp.move((this.r+180)%360, 3, 3000);// number, r, speed, lifetime//3kf 5min
-            */
             this.spriteItem.vx = 0;//-1;
             this.spriteItem.vy = 0;//-1;
-
-            //this.spriteItem.
 
             this.spriteItem.wall = false;
         }
@@ -598,19 +543,6 @@ function GameObj_FlyCanon(){
                 this.spriteItem.slow = false;
             }
         }
-
-        /*
-        this.old_x = this.x;
-        this.old_y = this.y;
-
-        this.x = this.x + vx;
-        this.y = this.y + vy;
-
-        if (this.x < 32)	this.x = 32;
-        if (this.x > RESO_X-32)	this.x = RESO_X-32;
-        if (this.y < 32)	this.y = 32;
-        if (this.y > RESO_Y-32)	this.y = RESO_Y-32;
-        */
 
         if (reexf) return;
 
@@ -656,18 +588,8 @@ function GameObj_GradeUpItem(){
 
     const RESO_X = 640;
 	const RESO_Y = 480-16;
-    /*
-    this.r = 0;
-    this.vr = 0;
-    this.x = 0;
-    this.y = 0;
 
-    this.old_X = 0;
-    this.old_y = 0;
-    */
     this.triggerDelay = 0;
-
-    let status = {speed:0, charge:0, power:0 };
 
     this.mode = 0;
     this.blink = true;
@@ -677,14 +599,7 @@ function GameObj_GradeUpItem(){
     let reexf;
 
     this.init = function(g){
-        /*
-        this.r = this.spriteItem.r;
-        this.vr = 0;
-        this.x =  this.spriteItem.x;
-        this.y =  this.spriteItem.y;
-        this.old_X = this.x;
-        this.old_y = this.y;
-        */
+
         this.triggerDelay = g.time()+250;
 
         this.mode = 0;
@@ -699,8 +614,9 @@ function GameObj_GradeUpItem(){
         this.spriteItem.normalDrawEnable = false;
         this.spriteItem.customDraw = customDraw;
 
-        this.spriteItem.moveFunc = function(){
-            this.alive--; this.x += this.vx; this.y += this.vy;
+        this.spriteItem.moveFunc = function(delta){
+            let tajs = (delta/(1000/60));
+            this.alive--; this.x += this.vx * tajs; this.y += this.vy * tajs;
         }
     }
 
@@ -745,27 +661,15 @@ function GameObj_GradeUpItem(){
 
                 this.mode = (this.spriteItem.mode != this.mode)?this.spriteItem.mode:this.mode;
                 this.spriteItem.priority = this.mode;
-                //this.mode++;
-                //if (this.mode>3)  this.mode = 0;
-                //modechange
 
                 this.blink = (this.blink)?false:true;
                 this.spriteItem.blink = this.blink;
 
                 this.barth = false;
             }
-            /*
-            if (result.clrf && (result.time + 750 > g.time())){
-                let r = Search(g, this.x, this.y);
-                this.spriteItem.move((r+260)%360,4,1);
-            }
-            */
-            //自機が生きている状態
             reexf = false;//爆発済みf
         }else{
             if (!reexf){
-//                 explose(g,
-//                    this.x, this.y);
                 reexf = true;
             }
         }

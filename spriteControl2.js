@@ -86,11 +86,11 @@ function GameSpriteControl(g) {
         }
 
         this.moveFunc = normal_move;//normal_move;
-        function normal_move(){
+        function normal_move(delta){
             this.alive--;
 
-            this.x += this.vx;
-            this.y += this.vy;
+            this.x += this.vx * (delta/(1000/60));
+            this.y += this.vy * (delta/(1000/60));
 
             if (this.alive <= 0) {
                 this.visible = false;
@@ -321,7 +321,7 @@ function GameSpriteControl(g) {
                 let sw = wo[i];
 
                 if (sw.alive > 0) {
-                    sw.moveFunc();
+                    sw.moveFunc(g.deltaTime());
                     /*
                     sw.alive--;
 

@@ -4,19 +4,11 @@
 // GameMain
 function SceneGame(){
 
-	const ROW = 80;
-	const COL = 60;
-
 	const RESO_X = 640;
 	const RESO_Y = 480-16;
 
-	let player = {r:0, vr:0, x:0, y:0, trgger_delay:0 
-	    ,op: { ptr: 0, x: Array(40), y: Array(40) }
-	};
-
 	let GObj;
 	let spriteTable;
-	let block;
 	let result;
 	let delay;
 	let trig_wait;

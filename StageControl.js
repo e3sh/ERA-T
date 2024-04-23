@@ -215,16 +215,6 @@ function StageControl(game){
 							}
 							p.dispose();
 						}
-						/*
-						if (p.id == "block"){
-							if (cy>=1){
-								block[cy-1][cx].on = true;
-								block[cy-1][cx].break = false;
-								//this._bhtm[cy-1][cx] = false;
-								p.dispose();
-							}
-						}
-						*/
 						if (p.id == "Player"){
 							p.wall = true;
 							block[cy][cx].on = false;
