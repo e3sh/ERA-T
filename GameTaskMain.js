@@ -61,6 +61,13 @@ class GameTask_Main extends GameTask {
 	        }
         );
 
+		g.sprite.setPattern("BULLET_P3", { image: "SPGraph",
+	        wait: 0, pattern: [
+                { x:48, y: 48, w: 8, h: 8, r: 0, fv: false, fh: false }
+	            ]
+	        }
+        );
+
 	    g.sprite.setPattern("Enemy", {
 	        image: "SPGraph",
 	        wait: 10,

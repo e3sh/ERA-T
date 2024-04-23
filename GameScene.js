@@ -280,6 +280,7 @@ function SceneGame(){
 						sp.dispose();
 						spitem.dispose();
 						result.score +=10;
+						break;//複数弾同時弾着でパワーアップが複数出てしまうので１回出たらLOOPをBreak;
 					}
 				}
 			}
@@ -318,7 +319,7 @@ function SceneGame(){
 				for (let lp in c) {
 					let spitem = c[lp];//SpNo指定の場合は、SpriteItem
 					if (!spitem.visible) continue;
-
+					//if (spitem.id == "BULLET_P3") continue;//Option用玉の場合貫通(強くなりすぎるから戻し)
 					if (spitem.id.substring(0,7) == "BULLET_"){
 						sp.mode++;
 						if (sp.mode>4)  sp.mode = 0;

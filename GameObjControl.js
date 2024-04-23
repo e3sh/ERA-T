@@ -122,7 +122,7 @@ function GameObject(){
 
                 if (Friend.sp.living){
                     op = this.op;
-                    sp = g.sprite.itemCreate("BULLET_P", true, 8, 8);
+                    sp = g.sprite.itemCreate("BULLET_P3", true, 8, 8);
                     sp.pos(op.x[(op.ptr) % op.x.length], op.y[(op.ptr) % op.x.length], 0, 0.6 );
                     sp.move((op.r[(op.ptr) % op.x.length]+90)% 360, 6, 3000);// number, r, speed, lifetime//3kf 5min
                 }
@@ -252,7 +252,7 @@ function GameObject(){
             if (this.y < 32)	this.y = 32;
             if (this.y > RESO_Y-32)	this.y = RESO_Y-32;
 
-            this.r = this.turlet.vecToR(vx,vy);
+            if (!result.clrf) this.r = this.turlet.vecToR(vx,vy);
 
             //console.log("x" + this.x + "y" + this.y + "r" + this.r);
 

@@ -91,7 +91,7 @@ function GameObj_Mine(){
                     this.triggerDelay = g.time()+1000;
 
                     //let n = g.sprite.get();//空値の場合は未使用スプライトの番号を返す。
-                    let sp = g.sprite.itemCreate("BULLET_P", true, 8, 8);
+                    let sp = g.sprite.itemCreate("BULLET_P3", true, 8, 8);
                     
                     //this.turlet.check(g, this.spriteItem.x, this.spriteItem.y);
                     let r =  this.turlet.vector();

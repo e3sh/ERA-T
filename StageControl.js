@@ -184,17 +184,17 @@ function StageControl(game){
 			if (cy>=0 && cy < block.length){
 				if (cx>=0 && cx < block[cy].length){
 					if (block[cy][cx].on){
-						if (p.id == "BULLET_P"){
+						if (p.id.substring(0,8) == "BULLET_P"){
 							block[cy][cx].hp--;
 							if (block[cy][cx].hp < 0){
 								block[cy][cx].on = false;
 								block[cy][cx].break = true;
 								block[cy][cx].hit = false;//true;
 							}
-							p.dispose();
+							if (p.id != "BULLET_P2") p.dispose();
 							result.score ++;
 						}
-
+						/*
 						if (p.id == "BULLET_P2"){
 							block[cy][cx].hp--;
 							if (block[cy][cx].hp < 0){
@@ -205,7 +205,7 @@ function StageControl(game){
 							//p.dispose();
 							result.score ++;
 						}
-
+						*/
 						if (p.id == "BULLET_E"){
 							block[cy][cx].hp--;
 							if (block[cy][cx].hp < 0){
