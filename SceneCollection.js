@@ -260,3 +260,37 @@ function SceneGPad(){
 		}
 	}
 }
+//----------------------------------------------------------------------
+// VGPadScene(I/Ostatus)
+function SceneVGPad(){
+
+	const X = 0;
+	const Y = 0;
+
+	let st;
+
+	this.step = function(g, i, p){
+
+		let s = g.vgamepad.check();
+
+		st = [];
+
+		st.push("state button:" + s.button);
+		st.push("state deg   :" + s.deg);
+		st.push("state distance:" + s.distance);
+	}
+	this.draw = function(g){
+
+		g.vgamepad.draw(g.screen[0]);
+
+        let cl = {};
+        cl.draw = function(device){
+            device.globalAlpha = 1.0;
+		}
+		g.screen[0].putFunc(cl);
+
+		for (let i in st){
+			g.font["8x8white"].putchr(st[i],X, Y+i*8);
+		}
+	}
+}

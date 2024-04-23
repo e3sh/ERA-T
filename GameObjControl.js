@@ -425,6 +425,7 @@ function GameObject(){
         , draw(dev){
             dev.beginPath();
             //dev.fillStyle = this.c;
+            dev.globalAlpha = 1.0;
             dev.strokeStyle = this.c;
             dev.lineWidth = 2;
             //dev.arc(this.x, this.y, 6, 0, 2 * Math.PI, false);

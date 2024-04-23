@@ -30,7 +30,7 @@ class GameTask_Main extends GameTask {
 		this.scene["GameOver"] = new SceneGameOver();
 		this.scene[	"Title"	] = new SceneTitle();
 		this.scene[	"Gpad"	] = new SceneGPad();
-
+		this.scene[	"VGpad"	] = new SceneVGPad();
 		
  	    //g.font["8x8white"].useScreen(1);
 	    g.sprite.setPattern("Player", { image: "SPGraph",
@@ -204,6 +204,13 @@ class GameTask_Main extends GameTask {
 			whr = (Math.sign(mstate.wheel)>0)?true:false;
 		}
 		*/
+		// Input VGpad ENTRY
+		let v = g.vgamepad.check();
+
+		let vLbtn = false; if (Boolean(v.button[0])) {if (v.button[0]) vLbtn = true;}
+		let vRbtn = false; if (Boolean(v.button[1])) {if (v.button[1]) vRbtn = true;}
+		let vUbtn = false; if (Boolean(v.button[2])) {if (v.button[2]) vUbtn = true;}
+		let vDbtn = false; if (Boolean(v.button[3])) {if (v.button[3]) vDbtn = true;}
 
 		//Input Mixing
 		if (r && (ar != -1)){
@@ -215,15 +222,22 @@ class GameTask_Main extends GameTask {
 
 			this._x = axes[0];//this._x + vx;
 			this._y = axes[1];//this._y + vy;
-		}else{
+		}else if (v.distance != -1){
+			let r = (v.deg-90) * (Math.PI / 180.0);
 
+			this._x = Math.cos(r);//this._x + vx;
+			this._y = Math.sin(r);//this._y + vy;
+
+			console.log("" + r + "," + this._x + "," + this._y);
+
+		} else {
 			this._x = (leftkey)?-1:(rightkey)?1:0;//this._x + vx;
 			this._y = (upkey)?-1:(downkey)?1:0;//this._y + vy;
 		}
 
-		let leftbutton = (lb || zkey || qkey);// || whl);
-		let rightbutton = (rb || zkey|| ekey);// || whr);
-		let trigger = (abtn || xbtn || spacekey);// || (mstate.button == 0));
+		let leftbutton = (lb || zkey || qkey || vLbtn);// || whl);
+		let rightbutton = (rb || zkey|| ekey || vRbtn);// || whr);
+		let trigger = (abtn || xbtn || spacekey || vDbtn);// || (mstate.button == 0));
 
 		let input = {x: this._x, y:this._y, trigger: trigger, left: leftbutton, right: rightbutton, keycode: w};
 
@@ -248,6 +262,8 @@ class GameTask_Main extends GameTask {
 		this._dv = (pkey)?true:false;
 		if (this._dv) this.scene["Gpad"].step(g, input, param);
 
+		this.scene["VGpad"].step(g, input, param);
+
 	}
 //----------------------------------------------------------------------
 	draw(g){// this.visible が true時にループ毎に実行される。
@@ -260,5 +276,7 @@ class GameTask_Main extends GameTask {
 		if (this._result.govf) this.scene["GameOver"].draw(g);
 		if (this._titlef) this.scene["Title"].draw(g);
 		if (this._dv) this.scene["Gpad"].draw(g);
+
+		this.scene["VGpad"].draw(g);
 	}
 }
