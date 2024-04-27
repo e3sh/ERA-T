@@ -13,7 +13,7 @@ https://e3sh.github.io/ERA-T/release/ERATANKdnc.html
 
 提出分との相違点
 
-    2024/04/23時点では一致
+    GameCoreのBeep音機能追加に伴う変更は反映していない。
 
 
 #### 提出先情報

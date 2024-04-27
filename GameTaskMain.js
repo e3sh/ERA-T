@@ -15,6 +15,8 @@ class GameTask_Main extends GameTask {
 	scene;//Scene
 
 	_dv;//DebugStatusDrawFlag
+
+	note;
 	
 	constructor(id){
 		super(id);
@@ -127,6 +129,15 @@ class GameTask_Main extends GameTask {
 		this.scene["Game"].init(g);
 		this._initGame(g);
 		this._sm = {x:0, y:0, old_x:0, old_y:0};//mouse移動有無のチェック用
+
+		g.beep.oscSetup(1);
+
+		this.note = g.beep.createNote(1);
+		this.note.on(0);
+
+		let score =["C5","C6"];
+		let s = g.beep.makeScore(score, 100, 1);
+		this.note.play(s, g.time());
 	}
 
 	_initGame(g){
@@ -248,6 +259,10 @@ class GameTask_Main extends GameTask {
 			param.block = 0; param.sprite = 0;
 			if (this.scene["Title"].step(g, input, {delay: this.titlewait} )){
 				this._titlef = false; 
+
+				let score =["C4","E4","G4"];
+				let s = g.beep.makeScore(score, 50, 1);
+				this.note.play(s, g.time());
 			}
 		}else if (param.gameover){
 			if (this.scene["GameOver"].step(g, input, param)){

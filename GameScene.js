@@ -22,6 +22,8 @@ function SceneGame(){
 
 	let stageCtrl;
 
+	let note;
+
 	function step_running_check(){
 		let stepc;
 		let store;
@@ -65,6 +67,15 @@ function SceneGame(){
 
 		spriteTable = g.sprite.itemList();
 		this.reset(g);
+
+		g.beep.oscSetup(1);
+
+		note = g.beep.createNote(1);
+		note.on(0);
+
+		score =["C6","C5"];
+		s = g.beep.makeScore(score, 50, 1);
+		note.play(s, g.time());
 	}
 
 	this.reset = function(g){
@@ -221,6 +232,11 @@ function SceneGame(){
 						stageCtrl.mapDamage(sp);
 						sp.dispose();
 						spitem.dispose();
+
+						score =["E4","D4","C4","B3"];
+						s = g.beep.makeScore(score, 50, 1);
+						note.play(s, g.time());
+
 					}
 				
 					if (sp.id == "Player" && spitem.id == "POWERUP"){
@@ -248,6 +264,10 @@ function SceneGame(){
 
 						result.score += ((spitem.mode ==0)?300:0);
 						spitem.dispose();
+
+						score =["C6","C5"];
+						s = g.beep.makeScore(score, 50, 1);
+						note.play(s, g.time());
 					}
 				}
 			}
@@ -272,9 +292,15 @@ function SceneGame(){
 						sp.dispose();
 						spitem.dispose();
 						result.score +=10;
+
+						score =["C4","C3"];
+						s = g.beep.makeScore(score, 50, 1);
+						note.play(s, g.time());
+
 						break;//複数弾同時弾着でパワーアップが複数出てしまうので１回出たらLOOPをBreak;
 					}
 				}
+
 			}
 
 			//弾の相殺
