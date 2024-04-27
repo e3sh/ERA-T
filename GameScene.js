@@ -66,16 +66,33 @@ function SceneGame(){
 		stageCtrl.init();
 
 		spriteTable = g.sprite.itemList();
-		this.reset(g);
+	
 
+		// pSG setup
+		note = [];
+		//@0 square wave/lfo off
 		g.beep.oscSetup(1);
+		g.beep.lfoReset();
+		note[0] = g.beep.createNote(1);
 
-		note = g.beep.createNote(1);
-		note.on(0);
+		//@1 sin wave/lfo 10hz, sine, depth50/ move 
+		g.beep.oscSetup(0);//square wave/lfo off
+		g.beep.lfoSetup(10,0,50);
+		note[1] = g.beep.createNote(1);
 
+		//@2 square wave/lfo 24, triangle, depth20 /crash
+		g.beep.oscSetup(1);//square wave/lfo off
+		g.beep.lfoSetup(24,3,20);
+		note[2] = g.beep.createNote(1);
+
+		//beep note running start
+		for (let n of note) n.on(0);
+		/*
 		score =["C6","C5"];
-		s = g.beep.makeScore(score, 50, 1);
+		s = g.beep.makeScore(score, 50, 0);
 		note.play(s, g.time());
+		*/
+		this.reset(g);
 	}
 
 	this.reset = function(g){
@@ -88,6 +105,14 @@ function SceneGame(){
 		myship.spriteItem = g.sprite.itemCreate("Player", true, 28, 28);
 		myship.spriteItem.pos(320,320);
 		myship.init(g);
+		myship.setNote(note[1]);
+		
+		//score =["G4","E4","E4","F5","D4","D4"];
+		//s = g.beep.makeScore(score, 250, 1);
+		//note[1].play(s, g.time());
+
+		//note[1].changeFreq(440);
+        //note[1].changeVol(1);
 
 		GObj.push(myship);
 		stageCtrl.change(1, GObj);
@@ -133,6 +158,10 @@ function SceneGame(){
 					myship.spriteItem.pos(320,320);
 
 					myship.x = 320; myship.y = 320;
+
+					let score =["E4","E#4","G5"];
+					let s = g.beep.makeScore(score, 150, 1);
+					note[0].play(s, g.time());
 				}
 			}
 
@@ -186,6 +215,10 @@ function SceneGame(){
 				}else{
 					result.clrf = true; 
 					delay = g.time()+3000;//MESSAGE WAIT
+
+					let score =["G4","C5","E5","G5","G5"];
+					let s = g.beep.makeScore(score, 100, 1);
+					note[0].play(s, g.time());
 				}
 			}else{
 				result.clrf = false; 
@@ -198,6 +231,10 @@ function SceneGame(){
 				delay = g.time()+3000;//MESSAGE WAIT
 				ene.now = 0;
 				result.govf = true; 
+
+				let score =["F4","E4","D4","C4","B3","B#3","C4"];
+				let s = g.beep.makeScore(score, 150, 1);
+				note[0].play(s, g.time());
 			}
 		}
 
@@ -235,7 +272,7 @@ function SceneGame(){
 
 						score =["E4","D4","C4","B3"];
 						s = g.beep.makeScore(score, 50, 1);
-						note.play(s, g.time());
+						note[2].play(s, g.time());
 
 					}
 				
@@ -267,7 +304,7 @@ function SceneGame(){
 
 						score =["C6","C5"];
 						s = g.beep.makeScore(score, 50, 1);
-						note.play(s, g.time());
+						note[0].play(s, g.time());
 					}
 				}
 			}
@@ -293,9 +330,9 @@ function SceneGame(){
 						spitem.dispose();
 						result.score +=10;
 
-						score =["C4","C3"];
+						score =["A3","A2"];
 						s = g.beep.makeScore(score, 50, 1);
-						note.play(s, g.time());
+						note[2].play(s, g.time());
 
 						break;//複数弾同時弾着でパワーアップが複数出てしまうので１回出たらLOOPをBreak;
 					}
@@ -314,6 +351,10 @@ function SceneGame(){
 						stageCtrl.mapDamage(sp);
 						sp.dispose();
 						spitem.dispose();
+
+						score =["C3"];
+						s = g.beep.makeScore(score, 50, 1);
+						note[2].play(s, g.time());
 					}
 				}
 			}
@@ -328,6 +369,10 @@ function SceneGame(){
 						stageCtrl.mapDamage(sp);
 						sp.dispose();
 						spitem.dispose();
+
+						score =["C3"];
+						s = g.beep.makeScore(score, 50, 1);
+						note[2].play(s, g.time());
 					}
 				}
 			}

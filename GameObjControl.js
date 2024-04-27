@@ -29,6 +29,9 @@ function GameObject(){
     let reexf;
     let blmode = false;
 
+    let note;
+    let noteptime;
+
     function turlet_vec_check(){
 		let turlet = 0;
 
@@ -93,7 +96,14 @@ function GameObject(){
         ArmorF.sp.dispose(); ArmorF.re = true;
         ArmorL.sp.dispose(); ArmorL.re = true;
         ArmorR.sp.dispose(); ArmorR.re = true;
-        
+
+    }
+
+    this.setNote = function(n){
+        note = n;
+        noteptime = 0;
+        //note.changeFreq(440);
+        //note.changeVol(1);
     }
   
     this.step = function(g, input, result){
@@ -263,9 +273,20 @@ function GameObject(){
             op.r[op.ptr] = this.turlet.vector();
             op.ptr++;
             op.ptr = op.ptr % op.x.length; 
+
+            if ((g.time() > noteptime)&&(!result.clrf)){
+                score =["C2"];
+                s = g.beep.makeScore(score, 250, 0.5);
+                note.play(s, g.time());
+                noteptime = g.time() + 250;
+            }
+            //note.changeFreq(70);
+            //note.changeVol(1);
         }else{
             if (input.left) this.turlet.move(-1);
             if (input.right) this.turlet.move(1);
+            //note.suspend();
+            //note.changeVol(0);
         }
     }
     

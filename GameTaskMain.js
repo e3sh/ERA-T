@@ -131,13 +131,14 @@ class GameTask_Main extends GameTask {
 		this._sm = {x:0, y:0, old_x:0, old_y:0};//mouse移動有無のチェック用
 
 		g.beep.oscSetup(1);
+		g.beep.lfoReset();
 
 		this.note = g.beep.createNote(1);
 		this.note.on(0);
 
 		let score =["C5","C6"];
 		let s = g.beep.makeScore(score, 100, 1);
-		this.note.play(s, g.time());
+		this.note.play(s, g.time()+250);
 	}
 
 	_initGame(g){
@@ -260,8 +261,8 @@ class GameTask_Main extends GameTask {
 			if (this.scene["Title"].step(g, input, {delay: this.titlewait} )){
 				this._titlef = false; 
 
-				let score =["C4","E4","G4"];
-				let s = g.beep.makeScore(score, 50, 1);
+				let score =["C4","C3","C4","G4","A0","C5"];
+				let s = g.beep.makeScore(score, 150, 1);
 				this.note.play(s, g.time());
 			}
 		}else if (param.gameover){
