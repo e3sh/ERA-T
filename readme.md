@@ -72,5 +72,6 @@ Release5 機能追加・修正
 Release6 タッチパネル対応
 
 
+Release7 効果音追加(Beep/SoundGenerator対応)
 
       
