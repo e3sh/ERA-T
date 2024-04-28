@@ -30,7 +30,8 @@ function GameObject(){
     let blmode = false;
 
     let note;
-    let noteptime;
+    let notescore;
+    let notetime;
 
     function turlet_vec_check(){
 		let turlet = 0;
@@ -97,11 +98,12 @@ function GameObject(){
         ArmorL.sp.dispose(); ArmorL.re = true;
         ArmorR.sp.dispose(); ArmorR.re = true;
 
+        notescore = g.beep.makeScore(["C2"], 250, 0.3);
     }
 
     this.setNote = function(n){
         note = n;
-        noteptime = 0;
+        notetime = 0;
         //note.changeFreq(440);
         //note.changeVol(1);
     }
@@ -136,6 +138,9 @@ function GameObject(){
                     sp.pos(op.x[(op.ptr) % op.x.length], op.y[(op.ptr) % op.x.length], 0, 0.6 );
                     sp.move((op.r[(op.ptr) % op.x.length]+90)% 360, 6, 3000);// number, r, speed, lifetime//3kf 5min
                 }
+                score =["E5","C5"];
+                s = g.beep.makeScore(score, 50, 0.5);
+                note.play(s, g.time());
             }
         }
 
@@ -274,11 +279,12 @@ function GameObject(){
             op.ptr++;
             op.ptr = op.ptr % op.x.length; 
 
-            if ((g.time() > noteptime)&&(!result.clrf)){
-                score =["C2"];
-                s = g.beep.makeScore(score, 250, 0.5);
-                note.play(s, g.time());
-                noteptime = g.time() + 250;
+            if (g.time() > notetime) note.busy = false;
+            if ((!note.busy)&&(!result.clrf)){
+                for (let n of notescore)n.use = false;
+                //notescore[0].use = false;
+                note.play(notescore, g.time());
+                notetime = g.time() + 240;
             }
             //note.changeFreq(70);
             //note.changeVol(1);

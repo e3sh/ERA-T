@@ -137,7 +137,7 @@ class GameTask_Main extends GameTask {
 		this.note.on(0);
 
 		let score =["C5","C6"];
-		let s = g.beep.makeScore(score, 100, 1);
+		let s = g.beep.makeScore(score, 100, 0.1);
 		this.note.play(s, g.time()+250);
 	}
 

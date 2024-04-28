@@ -390,6 +390,10 @@ function SceneGame(){
 						sp.x -= (spitem.x - sp.x)/5;
 						sp.y -= (spitem.y - sp.y)/5;
 						spitem.dispose();
+
+						score =["C4","E5"];
+						s = g.beep.makeScore(score, 50, 0.5);
+						note[2].play(s, g.time());
 					}
 					if (spitem.id == sp.id){
 						if (Math.trunc(spitem.x) == Math.trunc(sp.x)
