@@ -1,4 +1,4 @@
-function GameObject(){
+function GameObjectPlayer(){
 
     const RESO_X = 640;
 	const RESO_Y = 480;
@@ -104,12 +104,9 @@ function GameObject(){
     this.setNote = function(n){
         note = n;
         notetime = 0;
-        //note.changeFreq(440);
-        //note.changeVol(1);
     }
   
     this.step = function(g, input, result){
-        //result = {score:0, time:g.time(), stage:1, clrf:false, govf:false};
         this.spriteItem.collisionEnable = (result.clrf)?false:true;
 
         let x = input.x;
@@ -121,7 +118,6 @@ function GameObject(){
             if (this.triggerDelay < g.time()){
                 this.triggerDelay = g.time()+250;
 
-                //let n = g.sprite.get();//空値の場合は未使用スプライトの番号を返す。
                 let sp = g.sprite.itemCreate(((blmode)?"BULLET_P2":"BULLET_P"), true, 8, 8);
 
                 let r =  this.turlet.vector();
@@ -130,7 +126,6 @@ function GameObject(){
 
                 sp.pos(px, py, 0, 0.6 );
                 sp.move((r+90)% 360, 6, 120);// number, r, speed, lifetime//3kf 5min
-                //spriteTable.push(g.sprite.get(n));
 
                 if (Friend.sp.living){
                     op = this.op;
@@ -156,8 +151,14 @@ function GameObject(){
             }
         }
 
-        let vx = speed*x;
-        let vy = speed*y;
+        this.r = Math.trunc(360 + this.r + x*3)%360;
+        //let vx = speed*x;
+        //let vy = speed*y;
+
+        let vx = speed * (Math.cos((Math.PI/180)*(this.r))) * -y;
+        let vy = speed * (Math.sin((Math.PI/180)*(this.r))) * -y;
+
+        console.log(this.r + ",vx" + vx + ",vy" + vy + ",x" + x + ",y" +y);
 
         if (result.clrf && (vx==0 && vy==0)){
             let t = g.time() - result.time
@@ -244,7 +245,6 @@ function GameObject(){
         }
         
         wallf = (wpl || waf || wal || war)?true:false;
-        //console.log("wcb:x" + this.x + "y" + this.y + "r" + this.r);
         if (wallf){ 
             this.x = this.old_x;
             this.y = this.old_y;
@@ -275,9 +275,8 @@ function GameObject(){
             if (this.y < 0)	this.y = RESO_Y;
             if (this.y > RESO_Y)	this.y = 0;
             */
-            if (!result.clrf) this.r = this.turlet.vecToR(vx,vy);
+            //if (!result.clrf) this.r = this.turlet.vecToR(vx,vy);
 
-            //console.log("x" + this.x + "y" + this.y + "r" + this.r);
             op = this.op;
             op.x[op.ptr] = Math.trunc(this.x);
             op.y[op.ptr] = Math.trunc(this.y);
@@ -292,17 +291,13 @@ function GameObject(){
                 note.play(notescore, g.time());
                 notetime = g.time() + 240;
             }
-            //note.changeFreq(70);
-            //note.changeVol(1);
         }else{
             if (input.left) this.turlet.move(-1);
             if (input.right) this.turlet.move(1);
-            //note.suspend();
-            //note.changeVol(0);
         }
 
         //g.viewport.setPos(Math.trunc(this.x-320), Math.trunc(this.y-240));
-        g.screen[0].buffer.turn(360 - this.turlet.vector());
+        g.screen[0].buffer.turn(360 - this.r);//this.turlet.vector());
     }
     
     this.draw = function(g){
@@ -320,24 +315,11 @@ function GameObject(){
                         r.y-2,3,3,"gray"
                     );
                 }
-
             }
-            
             let op = this.op;
-            /*
-            g.screen[0].fill(
-                op.x[(op.ptr) % op.x.length]-8,
-                op.y[(op.ptr) % op.x.length]-8,15,15,"white"
-            );
-            g.screen[0].fill(
-                op.x[(op.ptr) % op.x.length] + Math.cos((op.r[(op.ptr) % op.x.length])*(Math.PI/180))*16 -2,
-                op.y[(op.ptr) % op.x.length] + Math.sin((op.r[(op.ptr) % op.x.length])*(Math.PI/180))*16 -2,4,4,"white"
-            );
-            */
             Friend.sp.pos(  op.x[(op.ptr) % op.x.length], op.y[(op.ptr) % op.x.length],op.r[(op.ptr) % op.x.length]+90, 0.8);
             FriendT.sp.pos( op.x[(op.ptr) % op.x.length], op.y[(op.ptr) % op.x.length],op.r[(op.ptr) % op.x.length]+90, 0.8);
-            //Friend.move(0,0,1000);
-            //Friend.pos(100,100,0,1);
+
             Friend.sp.view();
             FriendT.sp.view();
         }else{
@@ -365,7 +347,6 @@ function GameObject(){
                  explose(g,
                     tx + Math.cos((this.r)*(Math.PI/180))*20
                     , ty + Math.sin((this.r)*(Math.PI/180))*20
-                    //, (this.r)% 360,90
                 );
                 ArmorF.re = true;
             }
@@ -382,7 +363,6 @@ function GameObject(){
                  explose(g,
                     tx + Math.cos((this.r-90)*(Math.PI/180))*16
                     , ty + Math.sin((this.r-90)*(Math.PI/180))*16
-                    //, (this.r-90)% 360,90
                 );
                 ArmorL.re = true;
             }
@@ -399,7 +379,6 @@ function GameObject(){
                  explose(g,
                     Math.trunc(tx + Math.cos((this.r+90)*(Math.PI/180))*16)
                     , Math.trunc(ty + Math.sin((this.r+90)*(Math.PI/180))*16)
-                    //, (this.r+90)% 360,90
                 );
                 ArmorR.re = true;
             }
@@ -412,12 +391,6 @@ function GameObject(){
             MyTurlet.sp.r = (this.turlet.vector()+90)% 360;
             MyTurlet.sp.view();
         }
-        /*
-        let st = this.spriteItem.debug();
-        for (let i in st){
-            g.kanji.print(st[i],0, i*8);
-        }
-        */
     }
 
     function explose(g, x, y, sr=0, w=360){
@@ -452,336 +425,3 @@ function GameObject(){
         }
     }
 }
-
-
-function GameObj_Friend(){
-}
-
-function GameObj_Enemy(){
-}
-
-function GameObj_FlyCanon(){
-    
-    const RESO_X = 640;
-	const RESO_Y = 480;
-
-    this.r = 0;
-    this.vr = 0;
-    this.x = 0;
-    this.y = 0;
-
-    this.old_X = 0;
-    this.old_y = 0;
-
-    this.triggerDelay = 0;
-    this.triggerCount =0;
-
-    let status = {speed:0, charge:0, power:0 };
-
-    this.spriteItem;
-    let reexf;
-
-    let interval;
-    let turn;
-
-    this.init = function(g ,it=1000,tn=10){
-
-        this.r = this.spriteItem.r;
-        this.vr = 0;
-        this.x =  this.spriteItem.x;
-        this.y =  this.spriteItem.y;
-        this.old_X = this.x;
-        this.old_y = this.y;
-        this.triggerDelay = 0;
-        this.triggerCount =0;
-  
-        reexf = false;
-        interval = it;
-        turn = tn;
-    }
-
-    function vecToR(wx, wy){
-        //console.log(wx + "," + wy);
-        let r = (wx == 0)?
-        ((wy >= 0)?180: 0):
-        ((Math.atan(wy / wx) * (180.0 / Math.PI)) + ((wx >= 0)? 90:270))
-        
-        return (270+r)%360;
-    }
-
-    function Search(g, wx, wy){
-        const l = g.sprite.itemList();
-        let d = 999;
-        let c = -1;
-        for (let i in l){
-            if (l[i].id  == "Player" || l[i].id  == "FRIEND_P"){
-                let wd = distance({x:wx, y:wy},l[i]);// console.log(wd); 
-                if (wd <= d) {
-                    c = i;
-                    d = wd;
-                }
-            }
-        }
-        let rc = -1;
-        if (c != -1){
-            rc = vecToR(
-                wx - l[c].x,
-                wy - l[c].y
-            );
-       }
-       return rc;
-    }
-
-    function distance(s, t){
-        return Math.sqrt((Math.abs(t.x - s.x) * Math.abs(t.x - s.x)) + (Math.abs(t.y - s.y) * Math.abs(t.y - s.y)));
-    }
-
-    this.step = function(g, input, result) {
-
-        if (this.spriteItem.living){
-
-			if (this.triggerDelay < g.time()){
-				this.triggerDelay = g.time()+interval;
-                
-                this.triggerCount++;
-                    if (this.triggerCount%2 > 0){
-
-                    let sp = g.sprite.itemCreate("BULLET_E", true, 4, 4);
-
-                    let wr = Search(g, this.x, this.y);
-                    let r = (wr != -1)?wr-90: this.r + (g.time()%180+90);
-                    if (this.triggerCount%3 == 0) r = this.r;    
-
-                    let px = this.x;// + Math.cos((Math.PI/180)*r)
-                    let py = this.y;// + Math.sin((Math.PI/180)*r) 
-
-                    sp.pos(px, py, 0, 1);
-                    sp.move(r, 3, 120);// number, r, speed, lifetime//3kf 5min
-                }
-                this.r +=turn // r;//+= 5;
-                this.spriteItem.move(this.r, 2, 100);    
-			}
-            //自機が生きている状態
-            reexf = false;//爆発済みf
-        }else{
-            if (!reexf){
-                 explose(g,
-                    this.x, this.y);
-                reexf = true;
-            }
-        }
-        let wallf = Boolean(this.spriteItem.wall)?((this.spriteItem.wall)?true:false):false;
-        if (wallf){ 
-            this.r +=turn*5; this.r = this.r%360;
-
-            this.spriteItem.vx = 0;//-1;
-            this.spriteItem.vy = 0;//-1;
-
-            this.spriteItem.wall = false;
-        }
-
-        if (Boolean(this.spriteItem.slow)){ 
-            if (this.spriteItem.slow){
-                //this.spriteItem.alive = 5;
-                this.spriteItem.vx /=1.05;
-                this.spriteItem.vy /=1.05;
-                this.spriteItem.slow = false;
-            }else{
-                this.spriteItem.slow = false;
-            }
-        }
-
-        if (reexf) return;
-
-        //if (!lock) this.turlet.check(this.r);
-        //this.r  = vecToR(this.x - this.old_x,this.y - this.old_y);
-
-        this.old_x = this.x;
-        this.old_y = this.y;
-
-        this.x = this.spriteItem.x;
-        this.y = this.spriteItem.y;
-        this.r = this.spriteItem.r;
-
-        
-        if (this.x < 32)	this.spriteItem.x = 32;
-        if (this.x > RESO_X-32)	this.spriteItem.x = RESO_X-32;
-        if (this.y < 32)	this.spriteItem.y = 32;
-        if (this.y > RESO_Y-32)	this.spriteItem.y = RESO_Y-32;
-        
-
-        //let wr  = vecToR(this.spriteItem.x - this.old_x,this.spriteItem.y - this.old_y)+90;
-        //if (wr != this.spriteItem.r) this.spriteItem.r = wr;
-        //this.r = (this.spriteItem.r + 270)%360;
-    }
-
-    this.draw = function(g){
-        if (this.spriteItem.living) this.spriteItem.view();
-    }
-
-    function explose(g, x, y, sr=0, w=360){
-
-        for (let r=sr; r<w; r+=(360/12)){
-            sp = g.sprite.itemCreate("BULLET_E", true, 8, 8);
-            sp.pos(x, y, r);
-            sp.move(r, 2, 30);// number, r, speed, lifetime//
-        }
-    }
-} 
-
-function GameObj_Horming(){
-
-} 
-
-function GameObj_GradeUpItem(){
-
-    const RESO_X = 640;
-	const RESO_Y = 480;
-
-    this.triggerDelay = 0;
-
-    this.mode = 0;
-    this.blink = true;
-    this.barth = true;
-
-    this.spriteItem;
-    let reexf;
-
-    this.init = function(g){
-
-        this.triggerDelay = g.time()+250;
-
-        this.mode = 0;
-        this.barth = true;
-
-        this.spriteItem.mode = this.mode;
-        this.spriteItem.drawDesignData = drawDesignData;
-        this.spriteItem.blink = true;
-  
-        reexf = false;
-
-        this.spriteItem.normalDrawEnable = false;
-        this.spriteItem.customDraw = customDraw;
-
-        this.spriteItem.moveFunc = function(delta){
-            let tajs = (delta/(1000/60));
-            this.alive--; this.x += this.vx * tajs; this.y += this.vy * tajs;
-        }
-    }
-
-    function vecToR(wx, wy){
-        //console.log(wx + "," + wy);
-        let r = (wx == 0)?
-        ((wy >= 0)?180: 0):
-        ((Math.atan(wy / wx) * (180.0 / Math.PI)) + ((wx >= 0)? 90:270))
-        
-        return (270+r)%360;
-    }
-
-    function Search(g, wx, wy){
-        const l = g.sprite.itemList();
-        let c = -1;
-        for (let i in l){
-            if (l[i].id  == "Player"){
-                c = i;
-            }
-        }
-        let rc = -1;
-        if (c != -1){
-            rc = vecToR(
-                wx - l[c].x,
-                wy - l[c].y
-            );
-       }
-       return rc;
-    }
-
-    this.step = function(g, input, result) {
-        this.spriteItem.collisionEnable = !this.barth;
-        //console.log("pw-run" + this.triggerDelay );
-        if (result.clrf && (result.time + 750 > g.time())){
-            let r = Search(g, this.spriteItem.x, this.spriteItem.y);
-            this.spriteItem.move((r+260)%360,4,1);
-        }
-
-        if (this.spriteItem.living){
-			if (this.triggerDelay < g.time()){
-				this.triggerDelay = g.time()+250;
-
-                this.mode = (this.spriteItem.mode != this.mode)?this.spriteItem.mode:this.mode;
-                this.spriteItem.priority = this.mode;
-
-                this.blink = (this.blink)?false:true;
-                this.spriteItem.blink = this.blink;
-
-                this.barth = false;
-            }
-            reexf = false;//爆発済みf
-        }else{
-            if (!reexf){
-                reexf = true;
-            }
-        }
-
-        if (reexf) return;
-
-        //if (!lock) this.turlet.check(this.r);
-        const x = this.spriteItem.x;
-        const y = this.spriteItem.y;
-        const r = this.spriteItem.r;
-        
-        if (x < 32)	this.spriteItem.x = 32;
-        if (x > RESO_X-32)	this.spriteItem.x = RESO_X-32;
-        if (y < 32)	this.spriteItem.y = 32;
-        if (y > RESO_Y-32)	this.spriteItem.y = RESO_Y-32;
-        
-    }
-
-    this.draw = function(g){
-
-        if (this.spriteItem.living){
-            this.spriteItem.view();
-
-            //debug Draw
-           /*
-            const x = this.spriteItem.x;
-            const y = this.spriteItem.y;
-            let st = this.spriteItem.debug();
-            for (let i in st){g.kanji.print(st[i],0,i*8);}
-           */
-        }
-    }
-
-    const drawDesignData = {
-        str: [
-            ["得点","正面","側面","子機","弾種"]
-            ,[" 300","FWD","SIDE"," OPT","CHNG"]
-        ]
-        ,color: [
-            ["black","peru","navy","teal","indigo"]
-            ,["rgb(64,64,64)","orange","blue","green","blueviolet"]
-        ]
-    }
-
-    function customDraw(g, screen){
-
-        const st  = this.drawDesignData.str;
-        const col = this.drawDesignData.color;
-
-        let n = (this.blink)?0:1;
-
-        let r = g.viewport.viewtoReal(
-            Math.trunc(this.x - this.collision.w/2)
-            ,Math.trunc(this.y - this.collision.h/2)
-        )
-        if (r.in){
-            const x = r.x;
-            const y = r.y;
-            const w = this.collision.w;
-            const h = this.collision.h;
-            screen.fill(x, y, w, h, "white");
-            screen.fill(x+1, y+1, w-2, h-2, col[n][ this.mode ]);
-            g.kanji.print(st[n][this.mode], x+2, y+4);
-        }
-    }
-} 
