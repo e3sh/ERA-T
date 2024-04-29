@@ -33,6 +33,10 @@ class GameTask_Main extends GameTask {
 		this.scene[	"Title"	] = new SceneTitle();
 		this.scene[	"Gpad"	] = new SceneGPad();
 		this.scene[	"VGpad"	] = new SceneVGPad();
+
+		g.sprite.useScreen(0);
+		g.kanji.useScreen(0);
+		g.font["std"].useScreen(1);
 		
  	    //g.font["8x8white"].useScreen(1);
 	    g.sprite.setPattern("Player", { image: "SPGraph",

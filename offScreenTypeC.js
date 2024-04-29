@@ -12,7 +12,7 @@
 
 function offScreenTypeC( w, h, ix, iy ){//typeOffscreenCanvas版
     //w : width, h:height
-    const element = new OffscreenCanvas( w, h );
+    const element = new OffscreenCanvas( w*2, h*2 );
 
     const offset_x = ix;
     const offset_y = iy;
@@ -211,7 +211,7 @@ context.drawImage(offscreenCanvas, 0, 0);
         //2024/04/29 new Function turn
         if (enable_draw_flag){
             if (view_angle == 0){ 
-                //outdev.clearRect(x, y, w, h);
+                //outdev.clearRect(0, 0, w, h);
                 outdev.drawImage(element, offset_x, offset_y);
             }else{
                 let w = element.width;
@@ -225,7 +225,7 @@ context.drawImage(offscreenCanvas, 0, 0);
                 //outdev.drawImage(element, offset_x, offset_y);
 
                 outdev.restore();
-                console.log("e" + view_angle%360);
+                //console.log("e" + view_angle%360);
             }
         }
     }

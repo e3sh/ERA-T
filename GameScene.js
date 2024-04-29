@@ -101,7 +101,7 @@ function SceneGame(){
 		GObj = [];
 		g.sprite.itemFlash();
 
-		myship = new GameObject();
+		myship = new GameObjectPlayer();
 		myship.spriteItem = g.sprite.itemCreate("Player", true, 28, 28);
 		myship.spriteItem.pos(320,320);
 		myship.init(g);
@@ -134,7 +134,7 @@ function SceneGame(){
 	this.step = function(g, input, param){
 		stagetime = Math.trunc((g.time() - result.time)/100);
 		g.viewport.setPos(Math.trunc(320-myship.spriteItem.x), Math.trunc(240-myship.spriteItem.y));
-		//g.screen[0].buffer.turn(myship.spriteItem.r);
+		//g.screen[0].buffer.turn(myship.r);
 
 		for (let o of GObj){
 			o.step(g, input, result);
