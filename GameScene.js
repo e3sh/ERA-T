@@ -101,7 +101,7 @@ function SceneGame(){
 		GObj = [];
 		g.sprite.itemFlash();
 
-		myship = new GameObjectPlayer();
+		myship = new GameObjectPlayer();//GameObject();
 		myship.spriteItem = g.sprite.itemCreate("Player", true, 28, 28);
 		myship.spriteItem.pos(320,320);
 		myship.init(g);
@@ -127,6 +127,8 @@ function SceneGame(){
 		delay = 0;
 		trig_wait = 0;
 
+		//回転有効
+		//g.screen[0].buffer._2DEF(true);
 		g.screen[0].buffer.turn(0);
 	}
 	//=====
@@ -134,7 +136,7 @@ function SceneGame(){
 	this.step = function(g, input, param){
 		stagetime = Math.trunc((g.time() - result.time)/100);
 		//ここでviewportの基準座標を変える事でスクロールを実現している。↓
-		//g.viewport.setPos(Math.trunc(320-myship.spriteItem.x), Math.trunc(240-myship.spriteItem.y));
+		g.viewport.setPos(Math.trunc(320-myship.spriteItem.x), Math.trunc(240-myship.spriteItem.y));
 		//g.screen[0].buffer.turn(myship.r);
 
 		for (let o of GObj){
