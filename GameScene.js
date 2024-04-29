@@ -126,12 +126,15 @@ function SceneGame(){
 
 		delay = 0;
 		trig_wait = 0;
+
+		g.screen[0].buffer.turn(0);
 	}
 	//=====
 	// Step
 	this.step = function(g, input, param){
 		stagetime = Math.trunc((g.time() - result.time)/100);
 		g.viewport.setPos(Math.trunc(320-myship.spriteItem.x), Math.trunc(240-myship.spriteItem.y));
+		//g.screen[0].buffer.turn(myship.spriteItem.r);
 
 		for (let o of GObj){
 			o.step(g, input, result);
@@ -237,6 +240,8 @@ function SceneGame(){
 				let score =["F4","E4","D4","C4","B3","B#3","C4"];
 				let s = g.beep.makeScore(score, 150, 1);
 				note[0].play(s, g.time());
+
+				g.screen[0].buffer.turn(0);
 			}
 		}
 
@@ -444,6 +449,8 @@ function SceneGame(){
 
 		let wdt = watchdog.check();
 
+		stageCtrl.draw(g);
+
 		const vp = g.viewport.viewtoReal;
 		//　FIRE DRAW 
 		if (true){
@@ -467,7 +474,7 @@ function SceneGame(){
 			}
 		}
 
-		stageCtrl.draw(g);
+		//stageCtrl.draw(g);
 
 		if (!result.govf){
 

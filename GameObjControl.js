@@ -302,6 +302,7 @@ function GameObject(){
         }
 
         //g.viewport.setPos(Math.trunc(this.x-320), Math.trunc(this.y-240));
+        g.screen[0].buffer.turn(360 - this.turlet.vector());
     }
     
     this.draw = function(g){
