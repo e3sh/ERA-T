@@ -444,6 +444,8 @@ function SceneGame(){
 
 		let wdt = watchdog.check();
 
+		stageCtrl.draw(g);
+
 		const vp = g.viewport.viewtoReal;
 		//　FIRE DRAW 
 		if (true){
@@ -467,7 +469,7 @@ function SceneGame(){
 			}
 		}
 
-		stageCtrl.draw(g);
+		//stageCtrl.draw(g);
 
 		if (!result.govf){
 
