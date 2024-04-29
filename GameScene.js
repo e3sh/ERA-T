@@ -5,7 +5,7 @@
 function SceneGame(){
 
 	const RESO_X = 640;
-	const RESO_Y = 480-16;
+	const RESO_Y = 480;
 
 	let GObj;
 	let spriteTable;
@@ -131,6 +131,7 @@ function SceneGame(){
 	// Step
 	this.step = function(g, input, param){
 		stagetime = Math.trunc((g.time() - result.time)/100);
+		g.viewport.setPos(Math.trunc(320-myship.spriteItem.x), Math.trunc(240-myship.spriteItem.y));
 
 		for (let o of GObj){
 			o.step(g, input, result);
@@ -171,8 +172,9 @@ function SceneGame(){
 				msg.priority = 5;
 				msg.normalDrawEnable = false;
 				msg.customDraw = function(g, screen){
-					let x = Math.trunc(this.x-28);
-					let y = Math.trunc(this.y);
+					let r = g.viewport.viewtoReal(this.x-28, this.y);
+					let x = Math.trunc(r.x);
+					let y = Math.trunc(r.y);
 					screen.fill(x,y,48,8,"Black");
 					g.kanji.print("Extend.", x, y); 
 				};
@@ -413,13 +415,15 @@ function SceneGame(){
 				let p = s[i];
 				if ((p.x < 0)||(p.x > RESO_X)||(p.y < 0)||(p.y>RESO_Y)) {//p.visible = false;
 
+					
 					if ((p.x < 0)||(p.x > RESO_X)) p.dispose();//p.vx *=-1;//.05;
 					if ((p.y < 0)||(p.y > RESO_Y)) p.dispose();//p.vy *=-1.05;
+					
 					/*
-					if (p.x < 0) p.x = 0;
-					if (p.x > RESO_X) p.x = RESO_X;
-					if (p.y < 0) p.y = 0;
-					if (p.y > RESO_Y) p.y = RESO_Y;
+					if (p.x < 0) p.x = RESO_X;
+					if (p.x > RESO_X) p.x = 0;
+					if (p.y < 0) p.y = RESO_Y;
+					if (p.y > RESO_Y) p.y = 0;
 					*/
 				}
 				//if (p.visible) ar.push(s[i]);
@@ -440,22 +444,25 @@ function SceneGame(){
 
 		let wdt = watchdog.check();
 
+		const vp = g.viewport.viewtoReal;
 		//　FIRE DRAW 
 		if (true){
 			let p = g.sprite.itemList();
 			for (let i in p){
 				if (p[i].id.substring(0,6) == "BULLET"){
-					g.screen[0].fill(
-						p[i].x - p[i].collision.w/2
-						, p[i].y - p[i].collision.h/2 
-						, p[i].collision.w
-						, p[i].collision.h
-						,"BROWN"
-					);
-				}else{
-				//	g.kanji.print(p[i].id.substring(1,6)
-				//	,p[i].x - p[i].collision.w/2
-				//	, p[i].y - p[i].collision.h/2);
+
+					let r = vp(p[i].x, p[i].y);
+					let x = r.x;
+					let y = r.y;
+					if (r.in){
+						g.screen[0].fill(
+							x - p[i].collision.w/2
+							, y - p[i].collision.h/2 
+							, p[i].collision.w
+							, p[i].collision.h
+							,"BROWN"
+						);
+					}
 				}
 			}
 		}

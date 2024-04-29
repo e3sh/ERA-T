@@ -29,7 +29,12 @@ function main() {
 	//
 	game.screen[0].setBackgroundcolor("black");//"Navy"); 
     game.screen[0].setInterval(1); 
-    
+
+    game.viewport = new viewport();
+    game.viewport.size(640, 480);
+    //game.viewport.setPos(0,120);
+    game.viewport.repeat(false);
+   
 	game.run();
 }
 

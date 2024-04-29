@@ -79,7 +79,7 @@ function SceneResult(){
 	}
 	this.draw = function(g){
 
-		g.font["std"].putchr("STAGE CLEAR", X-100, Y-220, 3);
+		g.font["std"].putchr("STAGE CLEAR", X-100, Y-300, 3);
 		g.font["std"].putchr("STAGE CLEAR", X, Y);
 
 		//g.screen[0].fill(BAR_X + slot*36,BAR_Y,36,8,"blue");
@@ -186,7 +186,7 @@ function SceneGameOver(){
 	}
 	this.draw = function(g){
 
-		g.font["std"	].putchr("GAME OVER",		 X-100, Y-200,4	);
+		g.font["std"	].putchr("GAME OVER",		 X-100, Y-280,4	);
 		//g.font["std"	].putchr("STAGE:" + stage,	 X-80, Y,	);
 		//g.font["std"	].putchr("SCORE:" + score, X-80, Y+30	);
 		g.font["8x8white"].putchr(":" + (delay?"OK":"WAIT") , X, Y+8);

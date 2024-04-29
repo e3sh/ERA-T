@@ -4,7 +4,7 @@ function StageControl(game){
 	const COL = 80;
 
 	const RESO_X = 640;
-	const RESO_Y = 400;
+	const RESO_Y = 480;
 
 	let block;
 	let blkcnt;
@@ -258,33 +258,39 @@ function StageControl(game){
 
 	this.draw = function(g){
 
+		const vp = g.viewport.viewtoReal;
+		
 		let l = (Math.trunc(g.time()/250)%2);
+
+		let r = vp(0,0);
+		g.screen[0].fill(r.x, r.y, RESO_X, RESO_Y, "darkslategray");
+
 		blkcnt = 0;
 		for (let j=0; j<ROW; j++){
 			for (let i=0; i<COL; i++){
 				if (block[j][i].on){
-					if (block[j][i].hp != 0){
-						g.screen[0].fill(i*8,j*8,8,8,"lightgray");//"rgb(" + (i*8)%256 + "," + (j*8)%256 + ",128)");
-						g.screen[0].fill(i*8,j*8,7,7,"gray");//"rgb(" + (i*8)%256 + "," + (j*8)%256 + ",128)");
-					}else{
-						g.screen[0].fill(i*8+1,j*8+1,5,5,"gray");//,"rgb(" + (i*8)%256 + "," + (j*8)%256 + ",255)");
-					}
-					blkcnt++;
+					let r = vp(i*8,j*8);
+					let x = r.x;
+					let y = r.y;
+					if (r.in){
+						if (block[j][i].hp != 0){
+							g.screen[0].fill(x,y,8,8,"lightgray");//"rgb(" + (i*8)%256 + "," + (j*8)%256 + ",128)");
+							g.screen[0].fill(x,y,7,7,"gray");//"rgb(" + (i*8)%256 + "," + (j*8)%256 + ",128)");
+						}else{
+							g.screen[0].fill(x+1,y+1,5,5,"gray");//,"rgb(" + (i*8)%256 + "," + (j*8)%256 + ",255)");
+						}
+						blkcnt++;
 				}
-				/*
-				if ((!block[j][i].break)&&(!block[j][i].hit)){
-					if (true){
-						g.screen[0].fill(i*16+2,j*16,7,3,"rgb(" + (i*8)%256 + "," + (j*8)%256 + ",255)");
-					}else{
-						g.screen[0].fill(i*32+3,j*32,23,7,"rgb(" + (i*8)%256 + "," + (j*8)%256 + ",255)");
-					}
-					//g.screen[0].fill(i*32,j*32,15,15,"rgb(" + (i*8)%64 + "," + (j*8)%64 + ",127)");
-				*/
+				}
+
 				if (block[j][i].hit){
+					let r = vp(i*8,j*8);
+					let x = r.x;
+					let y = r.y;
 					if (l==0){
-						g.screen[0].fill(i*8+4,j*8+4,2,1,"red");//"rgb(" + (i*8)%64+128 + "," + (j*8)%64+128 + ",127)");
+						g.screen[0].fill(x+4,y+4,2,1,"red");//"rgb(" + (i*8)%64+128 + "," + (j*8)%64+128 + ",127)");
 					}else{
-						g.screen[0].fill(i*8+4,j*8+4,1,1,"red");//"rgb(" + (i*8)%64+128 + "," + (j*8)%64+128 + ",127)");
+						g.screen[0].fill(x+4,y+4,1,1,"red");//"rgb(" + (i*8)%64+128 + "," + (j*8)%64+128 + ",127)");
 					}
 					//g.screen[0].fill(i*32+14,j*32+2,4,2,"rgb(" + (i*8)%64+128 + "," + (j*8)%64+128 + ",127)");
 				}

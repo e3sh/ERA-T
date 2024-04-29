@@ -110,14 +110,23 @@ function GameSpriteControl(g) {
             this.living = false;
         }
         this.put = function (x, y, r=0, z=1) {
-    
-            if (!Boolean(pattern_[this.id])){
-                buffer_.fillText( this.index + " " + this.count , x, y);
-            }else{
-                spPut(pattern_[this.id].image, pattern_[this.id].pattern[this.pcnt], x, y, r, z);
-                this.count++;
-                if (this.count > pattern_[this.id].wait) { this.count = 0; this.pcnt++; }
-                if (this.pcnt > pattern_[this.id].pattern.length - 1) { this.pcnt = 0; }
+
+            let rf = true;                       
+            if (Boolean(g.viewport)){
+                let rs = g.viewport.viewtoReal(x,y);
+                x  = rs.x;
+                y  = rs.y;
+                rf = rs.in;
+            }
+            if (rf){
+                if (!Boolean(pattern_[this.id])){
+                    buffer_.fillText( this.index + " " + this.count , x, y);
+                }else{
+                    spPut(pattern_[this.id].image, pattern_[this.id].pattern[this.pcnt], x, y, r, z);
+                    this.count++;
+                    if (this.count > pattern_[this.id].wait) { this.count = 0; this.pcnt++; }
+                    if (this.pcnt > pattern_[this.id].pattern.length - 1) { this.pcnt = 0; }
+                }
             }
         }
         //内部処理用
@@ -340,13 +349,24 @@ function GameSpriteControl(g) {
                 if (sw.visible) {
                     if (sw.beforeCustomDraw) sw.customDraw(g, activeScreen);
                     if (sw.normalDrawEnable){
-                        if (!Boolean(pattern_[sw.id])) {
-                            buffer_.fillText(i + " " + sw.count, sw.x, sw.y);
-                        } else {
-                            spPut(pattern_[sw.id].image, pattern_[sw.id].pattern[sw.pcnt], sw.x, sw.y, sw.r, sw.z);
-                            sw.count++;
-                            if (sw.count > pattern_[sw.id].wait) { sw.count = 0; sw.pcnt++; }
-                            if (sw.pcnt > pattern_[sw.id].pattern.length - 1) { sw.pcnt = 0; }
+                        let rx= sw.x;
+                        let ry= sw.y;
+                        let rf = true;                       
+                        if (Boolean(g.viewport)){
+                            let rs = g.viewport.viewtoReal(rx,ry);
+                            rx = rs.x;
+                            ry = rs.y;
+                            rf = rs.in;
+                        }
+                        if (rf){
+                            if (!Boolean(pattern_[sw.id])) {
+                                buffer_.fillText(i + " " + sw.count, rx, ry);
+                            } else {
+                                spPut(pattern_[sw.id].image, pattern_[sw.id].pattern[sw.pcnt], rx, ry, sw.r, sw.z);
+                                sw.count++;
+                                if (sw.count > pattern_[sw.id].wait) { sw.count = 0; sw.pcnt++; }
+                                if (sw.pcnt > pattern_[sw.id].pattern.length - 1) { sw.pcnt = 0; }
+                            }
                         }
                     }
                     if (!sw.beforeCustomDraw) sw.customDraw(g, activeScreen);
