@@ -133,7 +133,8 @@ function SceneGame(){
 	// Step
 	this.step = function(g, input, param){
 		stagetime = Math.trunc((g.time() - result.time)/100);
-		g.viewport.setPos(Math.trunc(320-myship.spriteItem.x), Math.trunc(240-myship.spriteItem.y));
+		//ここでviewportの基準座標を変える事でスクロールを実現している。↓
+		//g.viewport.setPos(Math.trunc(320-myship.spriteItem.x), Math.trunc(240-myship.spriteItem.y));
 		//g.screen[0].buffer.turn(myship.r);
 
 		for (let o of GObj){

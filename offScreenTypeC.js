@@ -37,6 +37,7 @@ context.drawImage(offscreenCanvas, 0, 0);
     let enable_draw_flag = true;
     let enable_reset_flag = true;
 
+    let _2DEffectEnable = false;//事前にオンしないと効果が動作しない(DEBUG)
     let view_angle = 0;
 
     this.view = function ( flg ){ //flg : bool
@@ -54,7 +55,12 @@ context.drawImage(offscreenCanvas, 0, 0);
     }
     //2024/04/29 new Function turn
     this.turn = function( r ){
-        view_angle = r;
+        if  (_2DEffectEnable) 
+            view_angle = r;
+    }
+
+    this._2DEF = function(f){
+        _2DEffectEnable = f
     }
 
     //this.flip = function ( outdev ) {
