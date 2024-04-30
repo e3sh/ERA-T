@@ -128,7 +128,7 @@ function SceneGame(){
 		trig_wait = 0;
 
 		//回転有効
-		//g.screen[0].buffer._2DEF(true);
+		g.screen[0].buffer._2DEF(false);
 		g.screen[0].buffer.turn(0);
 	}
 	//=====
@@ -166,8 +166,8 @@ function SceneGame(){
 
 					myship.x = 320; myship.y = 320;
 
-					let score =["E4","E#4","G5"];
-					let s = g.beep.makeScore(score, 150, 1);
+					let score = ["G4","C5","E4","C4","A3"];
+					let s = g.beep.makeScore(score, 100, 1);
 					note[0].play(s, g.time());
 				}
 			}
@@ -189,6 +189,10 @@ function SceneGame(){
 
 				ene.now++; 
 				ene.max++;
+
+				let score = ["G5","C6","E6","C6","D6","G6"];
+				let s = g.beep.makeScore(score, 100, 1);
+				note[0].play(s, g.time());
 			}
 
 			if (ec == 0){ //(blkcnt <=0){ //Stage Clear;

@@ -16,18 +16,22 @@
 function viewport(){
 
     let x_, y_, w_, h_, repeat_= true;
-    x_ = 0; y_ = 0;
+    x_ = 0; y_ = 0, ix_ = 0, iy_ = 0;
 
     this.x = 0;
     this.y = 0;
     this.w = w_;
     this.h = h_;
-
+    this.ix = ix_;
+    this.iy = iy_;
+    
     function update(){
         this.x = x_;
         this.y = y_;
         this.w = w_;
         this.h = h_;
+        this.ix = ix_;
+        this.iy = iy_;
     }
     this.repeat = function(mode=true){
         repeat_ = mode;
@@ -42,6 +46,11 @@ function viewport(){
         update();
     }
 
+    this.border = function(w, h){
+        ix_ = w; iy_ = h;
+        update();
+    }
+
     this.viewtoReal = function(sx,sy){
         let rx = sx + x_;
         let ry = sy + y_;
@@ -50,11 +59,11 @@ function viewport(){
         if (repeat_){ // repeat true;
             if (rx<0)   rx = w_ + rx;
             if (rx>w_)  rx = rx % w_;
-            if (ry<0)   ry = w_ + ry;
+            if (ry<0)   ry = h_ + ry;
             if (ry>h_)  ry = ry % h_;
         }
 
-        f = (rx<0 || rx>w_ || ry<0 || ry>h_)?false:true; 
+        f = (rx + ix_ <0 || rx >w_+ix_ || ry + iy_ <0 || ry>h_+iy_)?false:true; 
 
         //console.log("x" + x_ + ",y" + y_ + ",w" + w_);
 

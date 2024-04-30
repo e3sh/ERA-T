@@ -158,7 +158,7 @@ function GameObjectPlayer(){
         let vx = speed * (Math.cos((Math.PI/180)*(this.r))) * -y;
         let vy = speed * (Math.sin((Math.PI/180)*(this.r))) * -y;
 
-        console.log(this.r + ",vx" + vx + ",vy" + vy + ",x" + x + ",y" +y);
+        //console.log(this.r + ",vx" + vx + ",vy" + vy + ",x" + x + ",y" +y);
 
         if (result.clrf && (vx==0 && vy==0)){
             let t = g.time() - result.time
@@ -297,7 +297,7 @@ function GameObjectPlayer(){
         }
 
         //g.viewport.setPos(Math.trunc(this.x-320), Math.trunc(this.y-240));
-        g.screen[0].buffer.turn(360 - this.r);//this.turlet.vector());
+        g.screen[0].buffer.turn(270 - this.r);//this.turlet.vector());
     }
     
     this.draw = function(g){

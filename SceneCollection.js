@@ -31,7 +31,7 @@ function SceneGameUI(){
 		//g.font["std"].putchr("PLAYER:" + ene.now + " SCORE:" + Math.trunc(result.score) + " STAGE:" + result.stage + " TIME:" + time, X, Y);
 		//g.font["std"].putchr("PLAYER:" + ene.now + " STAGE:" + result.stage, X, Y);
 	
-		let st="";for (let i=1; i<ene.now;i++)st+="▲";
+		let st="";for (let i=1; i<ene.now;i++)st+="A";
 		g.font["std"].putchr("PLAYER:" + st, X, Y);
 		g.font["std"].putchr("STAGE :" + result.stage + " SCORE:" + Math.trunc(result.score),  X, Y+8);
 		//g.kanji.print("強化：[正面][側面][僚機]", X, Y+16);

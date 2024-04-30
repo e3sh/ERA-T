@@ -275,6 +275,7 @@ function GameSpriteControl(g) {
         if (!Boolean(z)) { z = 1.0; }
 
         let simple = ((!d.fv) && (!d.fh) && (r == 0) && (alpha == 255));
+        //simple = true;
 
         //let simple = false;
         if (simple) {

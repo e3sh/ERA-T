@@ -33,9 +33,10 @@ function main() {
 
     game.viewport = new viewport();
     game.viewport.size(640, 480);
+    game.viewport.border(320,240);
     //game.viewport.setPos(0,120);
     game.viewport.repeat(false);
-   
+
 	game.run();
 }
 
