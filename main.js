@@ -31,11 +31,16 @@ function main() {
 	game.screen[0].setBackgroundcolor("black");//"Navy"); 
     game.screen[0].setInterval(1); 
 
+    /*　DefalutSetup
     game.viewport = new viewport();
     game.viewport.size(640, 480);
     game.viewport.border(320,240);
     //game.viewport.setPos(0,120);
     game.viewport.repeat(false);
+    */
+   
+    game.RESO_X = 1024; //FieldSize;
+    game.RESO_Y = 786;　//FieldSize
 
 	game.run();
 }

@@ -4,9 +4,6 @@
 // GameMain
 function SceneGame(){
 
-	const RESO_X = 640;
-	const RESO_Y = 480;
-
 	let GObj;
 	let spriteTable;
 	let result;
@@ -128,7 +125,7 @@ function SceneGame(){
 		trig_wait = 0;
 
 		//回転有効
-		g.screen[0].buffer._2DEF(false);
+		g.screen[0].buffer._2DEF(true);
 		g.screen[0].buffer.turn(0);
 	}
 	//=====
@@ -220,8 +217,8 @@ function SceneGame(){
 					//自爆破片の残骸が消えたまま残る問題の解消
 					let spt = g.sprite.itemList();
 					for (let o of spt){
-						if (o.id == "BULLET_P") o.dispose();
-						if (o.id == "BULLET_E") o.dispose();	
+						if (o.id.substring(0,8) == "BULLET_P") o.dispose();
+						if (o.id.substring(0,8) == "BULLET_E") o.dispose();	
 					}
 					//ene.now = (ene.now +30>ene.max)?ene.max:ene.now +30;//ENERGY
 				}else{
@@ -425,17 +422,17 @@ function SceneGame(){
 			//let ar = new Array(0);
 			for (let i in s){
 				let p = s[i];
-				if ((p.x < 0)||(p.x > RESO_X)||(p.y < 0)||(p.y>RESO_Y)) {//p.visible = false;
+				if ((p.x < 0)||(p.x > g.RESO_X)||(p.y < 0)||(p.y>g.RESO_Y)) {//p.visible = false;
 
 					
-					if ((p.x < 0)||(p.x > RESO_X)) p.dispose();//p.vx *=-1;//.05;
-					if ((p.y < 0)||(p.y > RESO_Y)) p.dispose();//p.vy *=-1.05;
+					if ((p.x < 0)||(p.x > g.RESO_X)) p.dispose();//p.vx *=-1;//.05;
+					if ((p.y < 0)||(p.y > g.RESO_Y)) p.dispose();//p.vy *=-1.05;
 					
 					/*
-					if (p.x < 0) p.x = RESO_X;
-					if (p.x > RESO_X) p.x = 0;
-					if (p.y < 0) p.y = RESO_Y;
-					if (p.y > RESO_Y) p.y = 0;
+					if (p.x < 0) p.x = g.RESO_X;
+					if (p.x > g.RESO_X) p.x = 0;
+					if (p.y < 0) p.y = g.RESO_Y;
+					if (p.y > g.RESO_Y) p.y = 0;
 					*/
 				}
 				//if (p.visible) ar.push(s[i]);

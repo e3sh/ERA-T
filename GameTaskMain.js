@@ -154,9 +154,6 @@ class GameTask_Main extends GameTask {
 //----------------------------------------------------------------------
 	step(g){// this.enable が true時にループ毎に実行される。
 
-		const RESO_X = 640;
-		const RESO_Y = 480;
-
 		// Input Keyboard ENTRY Check
 	    let w = g.keyboard.check();
 

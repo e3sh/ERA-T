@@ -1,8 +1,5 @@
 function GameObjectPlayer(){
 
-    const RESO_X = 640;
-	const RESO_Y = 480;
-
     this.r = 0;
     this.vr = 0;
     this.x = 0;
@@ -265,15 +262,15 @@ function GameObjectPlayer(){
 
             
             if (this.x < 32)	this.x = 32;
-            if (this.x > RESO_X-32)	this.x = RESO_X-32;
+            if (this.x > g.RESO_X-32)	this.x = g.RESO_X-32;
             if (this.y < 32)	this.y = 32;
-            if (this.y > RESO_Y-32)	this.y = RESO_Y-32;
+            if (this.y > g.RESO_Y-32)	this.y = g.RESO_Y-32;
             
             /*
-            if (this.x < 0)	this.x = RESO_X;
-            if (this.x > RESO_X)	this.x = 0;
-            if (this.y < 0)	this.y = RESO_Y;
-            if (this.y > RESO_Y)	this.y = 0;
+            if (this.x < 0)	this.x = g.RESO_X;
+            if (this.x > g.RESO_X)	this.x = 0;
+            if (this.y < 0)	this.y = g.RESO_Y;
+            if (this.y > g.RESO_Y)	this.y = 0;
             */
             //if (!result.clrf) this.r = this.turlet.vecToR(vx,vy);
 

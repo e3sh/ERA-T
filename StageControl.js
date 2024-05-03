@@ -3,9 +3,6 @@ function StageControl(game){
 	const ROW = 60;
 	const COL = 80;
 
-	const RESO_X = 640;
-	const RESO_Y = 480;
-
 	let block;
 	let blkcnt;
 	let rank;
@@ -263,7 +260,7 @@ function StageControl(game){
 		let l = (Math.trunc(g.time()/250)%2);
 
 		let r = vp(0,0);
-		g.screen[0].fill(r.x, r.y, RESO_X, RESO_Y, "darkslategray");
+		g.screen[0].fill(r.x, r.y, g.RESO_X, g.RESO_Y, "darkslategray");
 
 		blkcnt = 0;
 		for (let j=0; j<ROW; j++){

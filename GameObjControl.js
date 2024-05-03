@@ -1,8 +1,5 @@
 function GameObject(){
 
-    const RESO_X = 640;
-	const RESO_Y = 480;
-
     this.r = 0;
     this.vr = 0;
     this.x = 0;
@@ -265,15 +262,15 @@ function GameObject(){
 
             
             if (this.x < 32)	this.x = 32;
-            if (this.x > RESO_X-32)	this.x = RESO_X-32;
+            if (this.x > g.RESO_X-32)	this.x = g.RESO_X-32;
             if (this.y < 32)	this.y = 32;
-            if (this.y > RESO_Y-32)	this.y = RESO_Y-32;
+            if (this.y > g.RESO_Y-32)	this.y = g.RESO_Y-32;
             
             /*
-            if (this.x < 0)	this.x = RESO_X;
-            if (this.x > RESO_X)	this.x = 0;
-            if (this.y < 0)	this.y = RESO_Y;
-            if (this.y > RESO_Y)	this.y = 0;
+            if (this.x < 0)	this.x = g.RESO_X;
+            if (this.x > g.RESO_X)	this.x = 0;
+            if (this.y < 0)	this.y = g.RESO_Y;
+            if (this.y > g.RESO_Y)	this.y = 0;
             */
             if (!result.clrf) this.r = this.turlet.vecToR(vx,vy);
 
@@ -461,9 +458,6 @@ function GameObj_Enemy(){
 }
 
 function GameObj_FlyCanon(){
-    
-    const RESO_X = 640;
-	const RESO_Y = 480;
 
     this.r = 0;
     this.vr = 0;
@@ -605,9 +599,9 @@ function GameObj_FlyCanon(){
 
         
         if (this.x < 32)	this.spriteItem.x = 32;
-        if (this.x > RESO_X-32)	this.spriteItem.x = RESO_X-32;
+        if (this.x > g.RESO_X-32)	this.spriteItem.x = g.RESO_X-32;
         if (this.y < 32)	this.spriteItem.y = 32;
-        if (this.y > RESO_Y-32)	this.spriteItem.y = RESO_Y-32;
+        if (this.y > g.RESO_Y-32)	this.spriteItem.y = g.RESO_Y-32;
         
 
         //let wr  = vecToR(this.spriteItem.x - this.old_x,this.spriteItem.y - this.old_y)+90;
@@ -634,9 +628,6 @@ function GameObj_Horming(){
 } 
 
 function GameObj_GradeUpItem(){
-
-    const RESO_X = 640;
-	const RESO_Y = 480;
 
     this.triggerDelay = 0;
 
@@ -731,9 +722,9 @@ function GameObj_GradeUpItem(){
         const r = this.spriteItem.r;
         
         if (x < 32)	this.spriteItem.x = 32;
-        if (x > RESO_X-32)	this.spriteItem.x = RESO_X-32;
+        if (x > g.RESO_X-32)	this.spriteItem.x = g.RESO_X-32;
         if (y < 32)	this.spriteItem.y = 32;
-        if (y > RESO_Y-32)	this.spriteItem.y = RESO_Y-32;
+        if (y > g.RESO_Y-32)	this.spriteItem.y = g.RESO_Y-32;
         
     }
 
