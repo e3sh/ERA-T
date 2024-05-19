@@ -281,13 +281,13 @@ function SceneVGPad(){
 	}
 	this.draw = function(g){
 
-		g.vgamepad.draw(g.screen[0]);
+		g.vgamepad.draw(g.screen[1]);
 
         let cl = {};
         cl.draw = function(device){
             device.globalAlpha = 1.0;
 		}
-		g.screen[0].putFunc(cl);
+		g.screen[1].putFunc(cl);
 
 		for (let i in st){
 		//	g.font["8x8white"].putchr(st[i],X, Y+i*8);

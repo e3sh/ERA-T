@@ -200,9 +200,10 @@ class GameTask_Main extends GameTask {
 		   }
 		}
 
-		/* // Input Mouse ENTRY Check
-	    let mstate = g.mouse.check();
-
+		// Input Mouse ENTRY Check
+	    g.mouse.mode(g);
+		let mstate = g.mouse.check();
+		/*
 		if ((mstate.x != this._sm.old_x)||(mstate.x != this._sm.old_x)){
 			this._x = mstate.x;
 			this._y = mstate.y;
@@ -218,6 +219,7 @@ class GameTask_Main extends GameTask {
 		}
 		*/
 		// Input VGpad ENTRY
+		g.touchpad.mode(g);
 		let v = g.vgamepad.check();
 
 		let vLbtn = false; if (Boolean(v.button[0])) {if (v.button[0]) vLbtn = true;}
