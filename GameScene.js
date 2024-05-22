@@ -486,11 +486,14 @@ function SceneGame(){
 				o.draw(g);
 			}
 		}
-		/*		
+				
 		//　DEBUG DRAW 
-		if (true){
+		if (false){
+		const el = document.getElementById("message");
 		let p = g.sprite.itemList();
+		let st = "Sprite:<br>";
 		for (let i in p){
+			
 				if (false){
 					g.screen[0].fill(
 						p[i].x - p[i].collision.w/2
@@ -505,9 +508,43 @@ function SceneGame(){
 				if (p[i].visible) st += " A:" + p[i].alive;
 
 				g.font["std"].putchr(st,p[i].x, p[i].y+8);
+			
+				//st += i + "." + Object.entries(p[i]) + "<br>";
+				//st += i + "." + JSON.stringify(p[i]) + "<br>";
+				let d = p[i];
+				st += i
+				+ "| id:" + d.id
+				//+  "<br>"
+				+ ", living:" + d.living 
+				+ ", visible:" + d.visible
+				+ ", alive:" + d.alive
+				+ ", x:" + d.x 
+				+ ", y:" + d.y 
+				/*
+				this.x  = 0;
+				this.y  = 0;
+				this.r  = 0;
+				this.z  = 0;
+				this.vx = 0;
+				this.vy = 0;
+				this.priority = 0;
+				this.collisionEnable = true;
+				this.collision = {w:0,h:0};
+				this.id = "";
+				this.count = 0;
+				this.pcnt = 0;
+				this.index = 0;
+				this.living = true;
+				this.normalDrawEnable = true;
+				this.customDraw = function(g,screen){};
+				this.beforeCustomDraw = false;
+				this.moveFunc = normal_move;
+				*/
+				+"<br>";
 			}
+			el.innerHTML = st; 
 		}
-		*/
+
 		watchdog.set();
 	}
 }
